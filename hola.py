@@ -1,8 +1,6 @@
-
-print("Hola Mundo TILIN")
-print("Mike raton")
-print("FABIAN GAY")
-print("eso tilin wazaaa goku")
-print("marvin puto")
-
-print("MALDITA RATA")SKJBB,VLKNLKVXZNLNVBLSLKVNKL
+def mostrar_menu():
+    print("\n=======MENU=======")
+    print("1-registrar Jugar")
+    print("2-Mostrar Puntaje")
+    print("3-salir")
+    print("------------------")
