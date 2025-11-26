@@ -9,7 +9,7 @@ Jugando = True
 reloj = pygame.time.Clock()
 
 # --- FONDO ---
-fondo = pygame.image.load("mapa de fondo.png").convert()
+fondo = pygame.image.load("mapa de fondo.png")
 fondo = pygame.transform.scale(fondo, (2000, 500))
 
 # --- Animaciones caminar ---
@@ -17,28 +17,28 @@ CaminarD = [
     pygame.image.load("ImagenesPato/CaminarD1.png"),
     pygame.image.load("ImagenesPato/CaminarD2.png"),
 ]
-AnimD = [pygame.transform.scale(img, (96,96)) for img in CaminarD]
+AnimD = [pygame.transform.scale(imagen1, (96,96)) for imagen1 in CaminarD]
 
 CaminarI = [
     pygame.image.load("ImagenesPato/CaminarI1.png"),
     pygame.image.load("ImagenesPato/CaminarI2.png"),
 ]
-AnimI = [pygame.transform.scale(img, (96,96)) for img in CaminarI]
+AnimI = [pygame.transform.scale(imagen2, (96,96)) for imagen2 in CaminarI]
 
 # --- Sprites volar ---
 VolarD = pygame.transform.scale(pygame.image.load("ImagenesPato/VolarD.png"), (96,96))
 VolarI = pygame.transform.scale(pygame.image.load("ImagenesPato/VolarI.png"), (96,96))
 
 # Quieto
-Quieto = pygame.transform.scale(pygame.image.load("ImagenesPato/Quieto.png"), (96,96))
+Quieto = pygame.transform.scale(pygame.image.load("ImagenesPato/tung tung sitos.png"), (96,96))
 
 # Físicas
-vel_y = 0
-gravedad = 0.5
-en_suelo = True
+VelEny = 0
+Gravedad = 0.5
+EnElSuelo = True
 
 # Animación
-c_walk = 0
+Contador = 0
 
 # Cámara
 cam_x = 0
@@ -68,50 +68,52 @@ while Jugando:
         direccion = "izquierda"
 
     # --- Salto ---
-    if Movimiento[pygame.K_UP] and en_suelo:
-        vel_y = -10
-        en_suelo = False
+    if Movimiento[pygame.K_SPACE] and EnElSuelo:
+        VelEny = -10
+        EnElSuelo = False
 
     # --- Gravedad ---
-    vel_y += gravedad
-    Jugador.y += vel_y
+    VelEny += Gravedad
+    Jugador.y += VelEny
 
     # Suelo
     if Jugador.y >= 350:
         Jugador.y = 350
-        vel_y = 0
-        en_suelo = True
+        VelEny = 0
+        EnElSuelo = True
 
     # --- Cámara ---
-    cam_x = Jugador.x - 250
+    cam_x = Jugador.x - 200
 
     # --- ANIMACIONES ---
-    if not en_suelo:
+    if not EnElSuelo:
         # VOLANDO
-        if direccion == "derecha":
+        if Derecha:
             JugadorEstado = VolarD
-        else:
+        elif Izquierda:
             JugadorEstado = VolarI
+        else:
+            JugadorEstado = Quieto
 
     else:
         # CAMINANDO DERECHA
         if Derecha:
-            c_walk += 0.15
-            if c_walk >= len(AnimD):
-                c_walk = 0
-            JugadorEstado = AnimD[int(c_walk)]
+            Contador += 0.15
+            if Contador >= len(AnimD):
+                Contador = 0
+            JugadorEstado = AnimD[int(Contador)]
 
         # CAMINANDO IZQUIERDA
         elif Izquierda:
-            c_walk += 0.15
-            if c_walk >= len(AnimI):
-                c_walk = 0
-            JugadorEstado = AnimI[int(c_walk)]
+            Contador += 0.15
+            if Contador >= len(AnimI):
+                Contador = 0
+            JugadorEstado = AnimI[int(Contador)]
 
         # QUIETO
         else:
             JugadorEstado = Quieto
-            c_walk = 0
+            Contador = 0
 
     # =====================
     #      DIBUJAR
