@@ -1,6 +1,11 @@
 import pygame
+import Corridos_Chidos
 
 pygame.init()
+pygame.mixer.init()
+
+Corridos_Chidos.musica()
+
 pantalla = pygame.display.set_mode((500,500))
 
 Jugador = pygame.Rect(200,350,96,96)
