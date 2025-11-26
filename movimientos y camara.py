@@ -2,15 +2,11 @@ import pygame
 import Corridos_Chidos
 
 pygame.init()
-<<<<<<< HEAD
 pygame.mixer.init()
 
 Corridos_Chidos.musica()
 
-pantalla = pygame.display.set_mode((500,500))
-=======
-pantalla = pygame.display.set_mode((1000,800))
->>>>>>> 670bfd4129d2108c52eb1fec024de85e75e5ece4
+pantalla = pygame.display.set_mode((800,800))
 
 Jugador = pygame.Rect(200,515,96,96)
 
@@ -92,7 +88,7 @@ while Jugando:
         EnElSuelo = True
 
     # --- Cámara ---
-    cam_x = Jugador.x - 400
+    cam_x = Jugador.x - 200
 
     # --- ANIMACIONES ---
     if not EnElSuelo:
