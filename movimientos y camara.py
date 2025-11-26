@@ -2,15 +2,11 @@ import pygame
 import Corridos_Chidos
 
 pygame.init()
-<<<<<<< HEAD
 pygame.mixer.init()
 
 Corridos_Chidos.musica()
 
-pantalla = pygame.display.set_mode((500,500))
-=======
 pantalla = pygame.display.set_mode((1000,800))
->>>>>>> 670bfd4129d2108c52eb1fec024de85e75e5ece4
 
 Jugador = pygame.Rect(200,515,96,96)
 
@@ -23,23 +19,23 @@ fondo = pygame.transform.scale(fondo, (2000,800))
 
 # --- Animaciones caminar ---
 CaminarD = [
-    pygame.image.load("ImagenesPato/CaminarD1.png"),
-    pygame.image.load("ImagenesPato/CaminarD2.png"),
+    pygame.image.load("ImagenesTung/Tung Derecha1.png"),
+    pygame.image.load("ImagenesTung/Tung Derecha2.png"),
 ]
 AnimD = [pygame.transform.scale(imagen1, (96,96)) for imagen1 in CaminarD]
 
 CaminarI = [
-    pygame.image.load("ImagenesPato/CaminarI1.png"),
-    pygame.image.load("ImagenesPato/CaminarI2.png"),
+    pygame.image.load("ImagenesTung/Tung Izquierda1.png"),
+    pygame.image.load("ImagenesTung/Tung Izquierda2.png"),
 ]
 AnimI = [pygame.transform.scale(imagen2, (96,96)) for imagen2 in CaminarI]
 
 # --- Sprites volar ---
-VolarD = pygame.transform.scale(pygame.image.load("ImagenesPato/VolarD.png"), (96,96))
-VolarI = pygame.transform.scale(pygame.image.load("ImagenesPato/VolarI.png"), (96,96))
+VolarD = pygame.transform.scale(pygame.image.load("ImagenesTung/Tung Salto Derecha.png"), (96,96))
+VolarI = pygame.transform.scale(pygame.image.load("ImagenesTung/Tung Salto Izquierda.png"), (96,96))
 
 # Quieto
-Quieto = pygame.transform.scale(pygame.image.load("ImagenesPato/Quieto.png"), (96,96))
+Quieto = pygame.transform.scale(pygame.image.load("ImagenesTung/Tung Quieto.png"), (96,96))
 
 # Físicas
 VelEny = 0
