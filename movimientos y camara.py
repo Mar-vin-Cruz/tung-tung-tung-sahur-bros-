@@ -2,20 +2,24 @@ import pygame
 import Corridos_Chidos
 
 pygame.init()
+<<<<<<< HEAD
 pygame.mixer.init()
 
 Corridos_Chidos.musica()
 
 pantalla = pygame.display.set_mode((500,500))
+=======
+pantalla = pygame.display.set_mode((1000,800))
+>>>>>>> 670bfd4129d2108c52eb1fec024de85e75e5ece4
 
-Jugador = pygame.Rect(200,350,96,96)
+Jugador = pygame.Rect(200,515,96,96)
 
 Jugando = True
 reloj = pygame.time.Clock()
 
 # --- FONDO ---
 fondo = pygame.image.load("mapa de fondo.png")
-fondo = pygame.transform.scale(fondo, (2000, 500))
+fondo = pygame.transform.scale(fondo, (2000,800))
 
 # --- Animaciones caminar ---
 CaminarD = [
@@ -35,7 +39,7 @@ VolarD = pygame.transform.scale(pygame.image.load("ImagenesPato/VolarD.png"), (9
 VolarI = pygame.transform.scale(pygame.image.load("ImagenesPato/VolarI.png"), (96,96))
 
 # Quieto
-Quieto = pygame.transform.scale(pygame.image.load("ImagenesPato/tung tung sitos.png"), (96,96))
+Quieto = pygame.transform.scale(pygame.image.load("ImagenesPato/Quieto.png"), (96,96))
 
 # Físicas
 VelEny = 0
@@ -82,13 +86,13 @@ while Jugando:
     Jugador.y += VelEny
 
     # Suelo
-    if Jugador.y >= 350:
-        Jugador.y = 350
+    if Jugador.y >= 515:
+        Jugador.y = 515
         VelEny = 0
         EnElSuelo = True
 
     # --- Cámara ---
-    cam_x = Jugador.x - 200
+    cam_x = Jugador.x - 400
 
     # --- ANIMACIONES ---
     if not EnElSuelo:
