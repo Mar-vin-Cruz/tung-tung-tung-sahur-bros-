@@ -3,9 +3,6 @@ import Corridos_Chidos
 
 pygame.init()
 pygame.mixer.init()
-
-pygame.init()
-pygame.mixer.init()
 Corridos_Chidos.musica()
 
 pantalla = pygame.display.set_mode((1000,800))
@@ -16,8 +13,20 @@ Jugando = True
 reloj = pygame.time.Clock()
 
 # --- FONDO ---
-fondo = pygame.image.load("mapa de fondo.png")
-fondo = pygame.transform.scale(fondo, (2000,800))
+fondo1 = pygame.image.load("mapa de fondo.png")
+fondo1= pygame.transform.scale(fondo1, (2000,800))
+
+fondo2 = pygame.image.load("mapa de fondo.png")
+fondo2 = pygame.transform.scale(fondo2, (2000,800))
+
+fondo3 = pygame.image.load("mapa de fondo.png")
+fondo3 = pygame.transform.scale(fondo3, (2000,800))
+
+fondo4 = pygame.image.load("mapa de fondo.png")
+fondo4 = pygame.transform.scale(fondo4, (2000,800))
+
+Secreto = pygame.Rect(7800,515,96,96)
+ImgSecreto = pygame.transform.scale(pygame.image.load("ImagenesPato/VolarI.png"), (96,96))
 
 # --- Animaciones caminar ---
 CaminarD = [
@@ -65,12 +74,12 @@ while Jugando:
 
     # --- Movimiento horizontal ---
     if Movimiento[pygame.K_RIGHT]:
-        Jugador.x += 3
+        Jugador.x += 10
         Derecha = True
         direccion = "derecha"
 
     elif Movimiento[pygame.K_LEFT]:
-        Jugador.x -= 3
+        Jugador.x -= 10
         Izquierda = True
         direccion = "izquierda"
 
@@ -128,10 +137,14 @@ while Jugando:
     pantalla.fill((0,0,0))
 
     # Fondo
-    pantalla.blit(fondo, (-cam_x, 0))
+    pantalla.blit(fondo1, (-cam_x, 0))
+    pantalla.blit(fondo2, (-cam_x + 2000, 0))
+    pantalla.blit(fondo3, (-cam_x + 4000, 0))
+    pantalla.blit(fondo4, (-cam_x + 6000, 0))
 
     # Jugador
     pantalla.blit(JugadorEstado, (Jugador.x - cam_x, Jugador.y))
+    pantalla.blit(ImgSecreto,(Secreto.x - cam_x, Secreto.y))
 
     pygame.display.update()
     reloj.tick(60)
