@@ -27,7 +27,6 @@ fondo4 = pygame.transform.scale(fondo4, (2000,800))
 
 Secreto = pygame.Rect(7800,515,96,96)
 ImgSecreto = pygame.transform.scale(pygame.image.load("ImagenesPato/VolarI.png"), (96,96))
-
 # --- Animaciones caminar ---
 CaminarD = [
     pygame.image.load("ImagenesTung/Tung Derecha1.png"),
@@ -74,12 +73,12 @@ while Jugando:
 
     # --- Movimiento horizontal ---
     if Movimiento[pygame.K_RIGHT]:
-        Jugador.x += 10
+        Jugador.x += 6
         Derecha = True
         direccion = "derecha"
 
     elif Movimiento[pygame.K_LEFT]:
-        Jugador.x -= 10
+        Jugador.x -= 6
         Izquierda = True
         direccion = "izquierda"
 
