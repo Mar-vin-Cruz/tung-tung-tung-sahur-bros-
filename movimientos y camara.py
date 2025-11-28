@@ -4,7 +4,7 @@ import Corridos_Chidos
 pygame.init()
 pygame.mixer.init()
 Corridos_Chidos.musica()
-
+ 
 pantalla = pygame.display.set_mode((1000,800))
 
 Jugador = pygame.Rect(200,515,96,96)
@@ -13,6 +13,9 @@ Jugando = True
 reloj = pygame.time.Clock()
 
 # --- FONDO ---
+fondo0 = pygame.image.load("mapa de fondo.png")
+fondo0= pygame.transform.scale(fondo0, (2000,800))
+
 fondo1 = pygame.image.load("mapa de fondo.png")
 fondo1= pygame.transform.scale(fondo1, (2000,800))
 
@@ -26,17 +29,17 @@ fondo4 = pygame.image.load("mapa de fondo.png")
 fondo4 = pygame.transform.scale(fondo4, (2000,800))
 
 Secreto = pygame.Rect(7800,515,96,96)
-ImgSecreto = pygame.transform.scale(pygame.image.load("ImagenesPato/VolarI.png"), (96,96))
+ImgSecreto = pygame.transform.scale(pygame.image.load("ImagenesPato/Pato Quieto Frente.png"), (96,96))
 # --- Animaciones caminar ---
 CaminarD = [
-    pygame.image.load("ImagenesTung/Tung Derecha1.png"),
-    pygame.image.load("ImagenesTung/Tung Derecha2.png"),
+    pygame.image.load("ImagenesTung/Tung Quieto Derecha.png"),
+    pygame.image.load("ImagenesTung/Tung Caminando Derecha.png"),
 ]
 AnimD = [pygame.transform.scale(imagen1, (96,96)) for imagen1 in CaminarD]
 
 CaminarI = [
-    pygame.image.load("ImagenesTung/Tung Izquierda1.png"),
-    pygame.image.load("ImagenesTung/Tung Izquierda2.png"),
+    pygame.image.load("ImagenesTung/Tung Quieto Izquierda.png"),
+    pygame.image.load("ImagenesTung/Tung Caminando Izquierda.png"),
 ]
 AnimI = [pygame.transform.scale(imagen2, (96,96)) for imagen2 in CaminarI]
 
@@ -45,7 +48,7 @@ VolarD = pygame.transform.scale(pygame.image.load("ImagenesTung/Tung Salto Derec
 VolarI = pygame.transform.scale(pygame.image.load("ImagenesTung/Tung Salto Izquierda.png"), (96,96))
 
 # Quieto
-Quieto = pygame.transform.scale(pygame.image.load("ImagenesTung/Tung Quieto.png"), (96,96))
+Quieto = pygame.transform.scale(pygame.image.load("ImagenesTung/Tung  Quieto Frente.png"), (96,96))
 
 # Físicas
 VelEny = 0
@@ -73,12 +76,12 @@ while Jugando:
 
     # --- Movimiento horizontal ---
     if Movimiento[pygame.K_RIGHT]:
-        Jugador.x += 6
+        Jugador.x += 3
         Derecha = True
         direccion = "derecha"
 
     elif Movimiento[pygame.K_LEFT]:
-        Jugador.x -= 6
+        Jugador.x -= 3
         Izquierda = True
         direccion = "izquierda"
 
@@ -136,6 +139,7 @@ while Jugando:
     pantalla.fill((0,0,0))
 
     # Fondo
+    pantalla.blit(fondo0, (-cam_x - 2000, 0))
     pantalla.blit(fondo1, (-cam_x, 0))
     pantalla.blit(fondo2, (-cam_x + 2000, 0))
     pantalla.blit(fondo3, (-cam_x + 4000, 0))
