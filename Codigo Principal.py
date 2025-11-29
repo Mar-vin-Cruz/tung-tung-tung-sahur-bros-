@@ -42,9 +42,9 @@ while Jugando2 == False:
             ImgQuietoI = "ImagenesMago/Mago Quieto Izquierda.png"
             ImgCaminandoD = "ImagenesMago/Mago Caminando Derecha.png"
             ImgCaminandoI = "ImagenesMago/Mago Caminando Izquierda.png"
-            ImgQuietoF = "ImagenesTung/Tung  Quieto Frente.png"
+            ImgQuietoF = "ImagenesMago/Mago Quieto Frente.png"
             ImgSaltoD = "ImagenesMago/Mago Salto Derecha.png"
-            ImgSaltoI = "ImagenesTung/Tung Salto Izquierda.png"
+            ImgSaltoI = "ImagenesMago/Mago Salto Izquierda.png"
             Jugando2 = True
 
         elif Personajes== '4':
