@@ -75,6 +75,12 @@ Jugador = pygame.Rect(200,515,96,96)
 Jugando = True
 reloj = pygame.time.Clock()
 
+#Game Over
+try:
+    Game_Over_Fuente = pygame.font.Font(None,74)
+except:
+    Game_Over_Fuente = pygame.font.SysFont("Arial",74)
+
 #objetos(eje x,y,resolucion de pixeles)
 PlataformaImagen = "Objetos/PlataformaUa.png"
 Plataforma = pygame.Rect(7800,400,96,96)
@@ -99,7 +105,7 @@ Secreto = pygame.Rect(7800,515,96,96)
 ImgSecreto = pygame.transform.scale(pygame.image.load(Homero), (96,96))
 enemigo_v_x = -3
 liminete_iz = 7000
-liminete_der = 9000
+liminete_der = 7800
 
 
 # --- Animaciones caminar ---
@@ -180,7 +186,9 @@ while Jugando:
             enemigo_v_x = abs(enemigo_v_x)
         elif Secreto.x + Secreto.width >= liminete_der:
             enemigo_v_x = -abs(enemigo_v_x)
-
+    #Colision
+    if Jugador.collidedict(Secreto):
+        Jugador = False
 
     # --- Cámara ---
     cam_x = Jugador.x - 400
