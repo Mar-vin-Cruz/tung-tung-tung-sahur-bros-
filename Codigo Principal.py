@@ -2,6 +2,7 @@ import pygame
 import Corridos_Chidos
 import Menu
 
+
 Jugando2 = False 
 while Jugando2 == False:
     Menu.mostrar_menu()
@@ -96,6 +97,10 @@ fondo4 = pygame.transform.scale(fondo4, (2000,800))
 Homero = "Enemigos/Omero chino.gif"
 Secreto = pygame.Rect(7800,515,96,96)
 ImgSecreto = pygame.transform.scale(pygame.image.load(Homero), (96,96))
+enemigo_v_x = -3
+liminete_iz = 7000
+liminete_der = 9000
+
 
 # --- Animaciones caminar ---
 CaminarD = [
@@ -168,6 +173,14 @@ while Jugando:
         Jugador.y = 515
         VelEny = 0
         EnElSuelo = True
+
+    #Enemigo Movimiento del
+        Secreto.x += enemigo_v_x
+        if Secreto.x <= liminete_iz:
+            enemigo_v_x = abs(enemigo_v_x)
+        elif Secreto.x + Secreto.width >= liminete_der:
+            enemigo_v_x = -abs(enemigo_v_x)
+
 
     # --- Cámara ---
     cam_x = Jugador.x - 400
