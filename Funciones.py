@@ -69,20 +69,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     reloj = pygame.time.Clock()
 
     # --- FONDO ---
-    fondo0 = pygame.image.load("mapa de fondo.png")
-    fondo0= pygame.transform.scale(fondo0, (2000,800))
-
-    fondo1 = pygame.image.load("mapa de fondo.png")
-    fondo1= pygame.transform.scale(fondo1, (2000,800))
-
-    fondo2 = pygame.image.load("mapa de fondo.png")
-    fondo2 = pygame.transform.scale(fondo2, (2000,800))
-
-    fondo3 = pygame.image.load("mapa de fondo.png")
-    fondo3 = pygame.transform.scale(fondo3, (2000,800))
-
-    fondo4 = pygame.image.load("mapa de fondo.png")
-    fondo4 = pygame.transform.scale(fondo4, (2000,800))
+    fondo= pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
 
     # --- Animaciones caminar ---
     CaminarD = [
@@ -193,11 +180,11 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         pantalla.fill((0,0,0))
 
         # Posicion de los Fondos
-        pantalla.blit(fondo0, (-PosicionXCamara - 2000, 0))
-        pantalla.blit(fondo1, (-PosicionXCamara, 0))
-        pantalla.blit(fondo2, (-PosicionXCamara + 2000, 0))
-        pantalla.blit(fondo3, (-PosicionXCamara + 4000, 0))
-        pantalla.blit(fondo4, (-PosicionXCamara + 6000, 0))
+        pantalla.blit(fondo, (-PosicionXCamara - 2000, 0))
+        pantalla.blit(fondo, (-PosicionXCamara, 0))
+        pantalla.blit(fondo, (-PosicionXCamara + 2000, 0))
+        pantalla.blit(fondo, (-PosicionXCamara + 4000, 0))
+        pantalla.blit(fondo, (-PosicionXCamara + 6000, 0))
 
         # Posicion del Jugador
         pantalla.blit(JugadorEstado, (Jugador.x - PosicionXCamara, Jugador.y))
