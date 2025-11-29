@@ -69,33 +69,41 @@ pygame.mixer.init()
 
 pantalla = pygame.display.set_mode((1000,800))
 
-Jugador = pygame.Rect(200,515,96,96)
+#poscion x y hitbox
+Jugador = pygame.Rect(200,515,1,1)
 
-# VIDAS (solo 1 vida ahora)
-vida = 1   # <<------ SOLO 1 VIDA
+# VIDAS
+vida = 1   
 Jugando = True
 reloj = pygame.time.Clock()
 
-# varibles de mocimiento de homero
+# Velocidad, y desplazamineto x o y
 Velocidad_Enemigo = -3
-liminete_iz = 100
-liminete_der = 515
+liminete_iz_H = 7000
+liminete_der_H = 7800
+liminete_iz_G = 2000
+liminete_der_G = 2800
+
 
 # OBJETOS
-PlataformaImagen = "Objetos/PlataformaUa.png"
-Plataforma = pygame.Rect(7800,400,96,96)
-ImgPla = pygame.transform.scale(pygame.image.load(PlataformaImagen), (96,96))
+Plataforma = "Objetos/PlataformaUa.png"
+Posicionxy_Hitbox_P = pygame.Rect(250,515,96,96)
+Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (96,96))
 
-# FONDOS
+# FONDOS 
 fondo1 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
 fondo2 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
 fondo3 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
 fondo4 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
 
 # ENEMIGO (Homero)
-Homero = "Enemigos/Plataforma.png"
-Posicionxy_Hitbox_H = pygame.Rect(7800,515,96,96)  # HITBOX AJUSTADA AL TAMAÑO REAL
-Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96))
+Homero = "Enemigos/Omero chino.gif"
+Posicionxy_Hitbox_H = pygame.Rect(7000,515,96,96)  # HITBOX 
+Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96)) # Tamano
+# ENEMIGO (Green)
+Green = "Enemigos/Grenn_quieto.png"
+Posicionxy_Hitbox_G = pygame.Rect(2000,515,96,96)  # HITBOX 
+Escala_de_G = pygame.transform.scale(pygame.image.load(Green), (96,96)) # Tamano
 
 # ====== CORAZONES ======
 ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (150,100))
@@ -163,6 +171,7 @@ while Jugando:
     VelEny += Gravedad
     Jugador.y += VelEny
 
+
     if Jugador.y >= 515:
         Jugador.y = 515
         VelEny = 0
@@ -197,37 +206,61 @@ while Jugando:
             Contador = 0
 
     # ============================
-    #    COLISIÓN CON HOMERO (SIN INVENCIBILIDAD)
+    #    COLISIÓN De    ENemigos
     # ============================
 
     if Jugador.colliderect(Posicionxy_Hitbox_H):
         vida -= 1
-        print("HOMERO TE HIZO DAÑO!")
 
-    if vida <= 0:
-        print("MORISTE! Homero te destruyó.")
+    elif vida <= 0:
         Jugando = False
+    
+    if Jugador.colliderect(Posicionxy_Hitbox_G):
+        vida -= 1
 
-    #Enemigo Movimiento del
-    Posicionxy_Hitbox_H.y += Velocidad_Enemigo
-    if Posicionxy_Hitbox_H.y <= liminete_iz:
+
+    elif vida <= 0:
+        Jugando = False
+    
+    if Jugador.colliderect(Posicionxy_Hitbox_P):
+        vida == 1
+    
+    elif vida <= 0:
+        Jugando = False
+      
+    #Enememigos en el mapa
+
+    #Movimiento del enemigo en x y Homero
+    Posicionxy_Hitbox_H.x += Velocidad_Enemigo
+
+    if Posicionxy_Hitbox_H.x <= liminete_iz_H:
         Velocidad_Enemigo = abs(Velocidad_Enemigo)
-    elif Posicionxy_Hitbox_H.y +Posicionxy_Hitbox_H .width >= liminete_der:
+    elif Posicionxy_Hitbox_H.x +Posicionxy_Hitbox_H .width >= liminete_der_H:
+        Velocidad_Enemigo = -abs(Velocidad_Enemigo)
+    #Movimiento del enemigo en x y Green
+    Posicionxy_Hitbox_G.x += Velocidad_Enemigo
+    if Posicionxy_Hitbox_G.x <= liminete_iz_G:
+        Velocidad_Enemigo = abs(Velocidad_Enemigo)
+    elif Posicionxy_Hitbox_G.x +Posicionxy_Hitbox_G .width >= liminete_der_G:
         Velocidad_Enemigo = -abs(Velocidad_Enemigo)
 
     
+
     # Color de la terminal
 
     pantalla.fill((0,0,0))
-
+    
+    #posicion de los fondos
     pantalla.blit(fondo1, (-cam_x, 0))
     pantalla.blit(fondo2, (-cam_x + 2000, 0))
     pantalla.blit(fondo3, (-cam_x + 4000, 0))
     pantalla.blit(fondo4, (-cam_x + 6000, 0))
-
+    
+    #Mostrador de pantalla
     pantalla.blit(JugadorEstado, (Jugador.x - cam_x, Jugador.y))
     pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - cam_x, Posicionxy_Hitbox_H.y))
-    pantalla.blit(ImgPla, (Plataforma.x - cam_x, Plataforma.y))
+    pantalla.blit(Escala_de_G,(Posicionxy_Hitbox_G.x - cam_x, Posicionxy_Hitbox_G.y))
+    pantalla.blit(Escala_de_P, (Posicionxy_Hitbox_P.x - cam_x, Posicionxy_Hitbox_P.y))
 
     # DIBUJAR CORAZÓN ÚNICO
     if vida == 1:
