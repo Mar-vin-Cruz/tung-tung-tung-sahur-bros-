@@ -2,17 +2,19 @@ import pygame
 import Corridos_Chidos
 import Menu
 
-Jugando2 = False 
+Personaje = '0'
+opcion = 0
+
+Jugando2 = False
 while Jugando2 == False:
     Menu.mostrar_menu()
-    opcion = str(input("seleccione una Opcion: "))
-    
-    if opcion == '1':
+    opcion = int(input("seleccione una Opcion:", ))
+    if opcion == 1:
         
+        Peronajes = int(input("Selecciones un personaje (1-3):", ))
 
-        Personajes = str(input("Selecciones un personaje (1-3):", ))
-
-        if Personajes == '1':
+        if Peronajes == 1:
+        
             ImgQuietoD = "ImagenesPato/Pato Quieto Derecha.png"
             ImgQuietoI = "ImagenesPato/Pato Quieto Izquierda.png"
             ImgCaminandoD = "ImagenesPato/Pato Caminando Derecha.png"
@@ -23,7 +25,8 @@ while Jugando2 == False:
             Jugando2 = True
             
         
-        elif Personajes == '2':
+        elif Peronajes == 2:
+        
             ImgQuietoD = "ImagenesTung/Tung Quieto Derecha.png"
             ImgQuietoI = "ImagenesTung/Tung Quieto Izquierda.png"
             ImgCaminandoD = "ImagenesTung/Tung Caminando Derecha.png"
@@ -33,18 +36,23 @@ while Jugando2 == False:
             ImgSaltoI = "ImagenesTung/Tung Salto Izquierda.png"
             Jugando2 = True
 
+        else:
+            print("Numero invalido")
+            Jugando2 = False
+
 pygame.init()
 pygame.mixer.init()
 Corridos_Chidos.musica()
 
 pantalla = pygame.display.set_mode((1000,800))
-
 Jugador = pygame.Rect(200,515,96,96)
-
 Jugando = True
 reloj = pygame.time.Clock()
 
 # --- FONDO ---
+fondo0 = pygame.image.load("mapa de fondo.png")
+fondo0= pygame.transform.scale(fondo0, (2000,800))
+
 fondo1 = pygame.image.load("mapa de fondo.png")
 fondo1= pygame.transform.scale(fondo1, (2000,800))
 
@@ -58,18 +66,17 @@ fondo4 = pygame.image.load("mapa de fondo.png")
 fondo4 = pygame.transform.scale(fondo4, (2000,800))
 
 Secreto = pygame.Rect(7800,515,96,96)
-ImgSecreto = pygame.transform.scale(pygame.image.load(ImgQuietoD), (96,96))
-
+ImgSecreto = pygame.transform.scale(pygame.image.load(ImgQuietoF), (96,96))
 # --- Animaciones caminar ---
 CaminarD = [
-    pygame.image.load(ImgCaminandoD),
-    pygame.image.load(ImgQuietoD),
+pygame.image.load(ImgQuietoD),
+pygame.image.load(ImgCaminandoD),
 ]
 AnimD = [pygame.transform.scale(imagen1, (96,96)) for imagen1 in CaminarD]
 
 CaminarI = [
-    pygame.image.load(ImgCaminandoI),
-    pygame.image.load(ImgQuietoI),
+pygame.image.load(ImgQuietoI),
+pygame.image.load(ImgCaminandoI),
 ]
 AnimI = [pygame.transform.scale(imagen2, (96,96)) for imagen2 in CaminarI]
 
@@ -106,14 +113,12 @@ while Jugando:
 
     # --- Movimiento horizontal ---
     if Movimiento[pygame.K_RIGHT]:
-        Jugador.x += 10
-        Jugador.x += 6
+        Jugador.x += 3
         Derecha = True
         direccion = "derecha"
 
     elif Movimiento[pygame.K_LEFT]:
-        Jugador.x -= 10
-        Jugador.x -= 6
+        Jugador.x -= 3
         Izquierda = True
         direccion = "izquierda"
 
@@ -164,13 +169,13 @@ while Jugando:
         else:
             JugadorEstado = Quieto
             Contador = 0
-
     # =====================
     #      DIBUJAR
     # =====================
-    pantalla.fill((0,0,0))
+    pantalla.fill((0,255,0))
 
     # Fondo
+    pantalla.blit(fondo0, (-cam_x - 2000, 0))
     pantalla.blit(fondo1, (-cam_x, 0))
     pantalla.blit(fondo2, (-cam_x + 2000, 0))
     pantalla.blit(fondo3, (-cam_x + 4000, 0))
@@ -182,3 +187,4 @@ while Jugando:
 
     pygame.display.update()
     reloj.tick(60)
+
