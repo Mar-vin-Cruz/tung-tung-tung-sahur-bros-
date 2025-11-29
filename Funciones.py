@@ -3,97 +3,61 @@ from colorama import Fore, Style
 import pandas as pd
 import matplotlib.pyplot as plt
 import pygame
-import Corridos_Chidos
 
 fig = Figlet(font="ANSI_Shadow")
 Titulo = fig.renderText("Tung Tung Bros")
 Jugando = False
 
+#Menu principal
 def mostrar_menu():
     print(Fore.GREEN + Titulo)
-    print("\n=======MENU=======")
-    print(Fore.CYAN + "1-Registrare")
-    print(Fore.BLUE + "2-Jugar")
-    print(Fore.GREEN + "3-Mostrar Puntaje")
-    print(Fore.RED + "4-salir")
+    print(Fore.LIGHTYELLOW_EX + "\n=======MENU=======")
+    print(Fore.GREEN + "1-Jugar")
+    print(Fore.BLUE + "2-Mostrar Puntajes")
+    print(Fore.RED + "3-Salir")
     print(Style.RESET_ALL)
     print("------------------")
 
-#Codigo principal
+#Seleccionar personajes(Imagenes)
 def seleccion_pj():
-    opcion = str(input("seleccione una Opcion: "))
-    
-    if opcion == '1':
-        
-        try:
-        
-            Peronajes = str(input("Selecciones un personaje (1-3):", ))
+        PersonajeExistente = False
+        while PersonajeExistente == False:
+            Personajes = str(input("Selecciones un personaje (1-2):", ))
 
-            if Peronajes == '1':
-                Jugando = True
-                ImgQuietoD = "ImagenesPato/Pato Quieto Derecha.png"
-                ImgQuietoI = "ImagenesPato/Pato Quieto Izquierda.png"
-                ImgCaminandoD = "ImagenesPato/Pato Caminando Derecha.png"
-                ImgCaminandoI = "ImagenesPato/Pato Caminando Izquierda.png"
-                ImgQuietoF = "ImagenesPato/Pato Quieto Frente.png"
-                ImgSaltoD = "ImagenesPato/Pato Salto Derecha.png"
-                ImgSaltoI = "ImagenesPato/Pato Salto Izquierda.png"
-                
+            if Personajes == '1':
             
-            elif Peronajes == '2':
-                Jugando = True
-                ImgQuietoD = "ImagenesTung/Tung Quieto Derecha.png"
-                ImgQuietoI = "ImagenesTung/Tung Quieto Izquierda.png"
-                ImgCaminandoD = "ImagenesTung/Tung Caminando Derecha.png"
-                ImgCaminandoI = "ImagenesTung/Tung Caminando Izquierda.png"
-                ImgQuietoF = "ImagenesTung/Tung  Quieto Frente.png"
-                ImgSaltoD = "ImagenesTung/Tung Salto Derecha.png"
-                ImgSaltoI = "ImagenesTung/Tung Salto Izquierda.png"
-                
+                    ImgQuietoD = "ImagenesPato/Pato Quieto Derecha.png"
+                    ImgQuietoI = "ImagenesPato/Pato Quieto Izquierda.png"
+                    ImgCaminandoD = "ImagenesPato/Pato Caminando Derecha.png"
+                    ImgCaminandoI = "ImagenesPato/Pato Caminando Izquierda.png"
+                    ImgQuietoF = "ImagenesPato/Pato Quieto Frente.png"
+                    ImgSaltoD = "ImagenesPato/Pato Salto Derecha.png"
+                    ImgSaltoI = "ImagenesPato/Pato Salto Izquierda.png"
+                    PersonajeExistente = True
             
-            elif Peronajes == 3:
-                    MImgQuietoD = ""
-                    MImgQuietoI = ""
-                    MImgCaminandoD = ""
-                    MImgCaminandoI = ""
-                    MImgQuietoF = ""
-                    MImgSaltoD = ""
-                    MImgSaltoI = ""
-
-        except FileNotFoundError:        
-            print("Primero elija el personaje")          
-
-
-    elif opcion == 3:
-        try:
-            #Falta definir puntuacion
-            df = Datos()
-            print(df)
-            colores = [ 'blue', 'orange', 'green', 'red', 'purple', 
-                        'brown', 'pink', 'gray', 'olive', 'cyan'
-                    ]
-            plt.figure(figsize=(12, 7))
-            plt.bar(df["Jugador"], df["Puntuacion"], color=colores)
-            plt.title("Puntuacion de los jugadores")
-            plt.xlabel("Nombre de los jugadores")
-            plt.ylabel("Puntuacion")
-            plt.grid(axis="y", linestyle="--", alpha=0.6)
-            plt.ticklabel_format(style='plain', axis='y')
-            plt.savefig("grafica_Score.png")
-            plt.show()
-        except SyntaxError:
-                print("Juege una partida para ver la puntuacion")
+            elif Personajes == '2':
+                    ImgQuietoD = "ImagenesTung/Tung Quieto Derecha.png"
+                    ImgQuietoI = "ImagenesTung/Tung Quieto Izquierda.png"
+                    ImgCaminandoD = "ImagenesTung/Tung Caminando Derecha.png"
+                    ImgCaminandoI = "ImagenesTung/Tung Caminando Izquierda.png"
+                    ImgQuietoF = "ImagenesTung/Tung  Quieto Frente.png"
+                    ImgSaltoD = "ImagenesTung/Tung Salto Derecha.png"
+                    ImgSaltoI = "ImagenesTung/Tung Salto Izquierda.png"
+                    PersonajeExistente = True
+                
+            else: 
+                print("Solo del 1 al 2")
         
-def Juego():
+        return ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI        
+
+#Abrir juego    
+def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI):
     Jugando = True
     pygame.init()
     pygame.mixer.init()
-    Corridos_Chidos.musica()
-    
+    musica()
     pantalla = pygame.display.set_mode((1000,800))
-
     Jugador = pygame.Rect(200,515,96,96)
-
     reloj = pygame.time.Clock()
 
     # --- FONDO ---
@@ -112,8 +76,6 @@ def Juego():
     fondo4 = pygame.image.load("mapa de fondo.png")
     fondo4 = pygame.transform.scale(fondo4, (2000,800))
 
-    Secreto = pygame.Rect(7800,515,96,96)
-    ImgSecreto = pygame.transform.scale(pygame.image.load(ImgQuieto), (96,96))
     # --- Animaciones caminar ---
     CaminarD = [
         pygame.image.load(ImgQuietoD),
@@ -143,7 +105,7 @@ def Juego():
     Contador = 0
 
     # Cámara
-    cam_x = 0
+    PosicionXCamara = 0
 
     # Dirección
     direccion = "derecha"
@@ -185,7 +147,7 @@ def Juego():
             EnElSuelo = True
 
         # --- Cámara ---
-        cam_x = Jugador.x - 400
+        PosicionXCamara = Jugador.x - 400
 
         # --- ANIMACIONES ---
         if not EnElSuelo:
@@ -223,15 +185,19 @@ def Juego():
         pantalla.fill((0,0,0))
 
         # Fondo
-        pantalla.blit(fondo0, (-cam_x - 2000, 0))
-        pantalla.blit(fondo1, (-cam_x, 0))
-        pantalla.blit(fondo2, (-cam_x + 2000, 0))
-        pantalla.blit(fondo3, (-cam_x + 4000, 0))
-        pantalla.blit(fondo4, (-cam_x + 6000, 0))
+        pantalla.blit(fondo0, (-PosicionXCamara - 2000, 0))
+        pantalla.blit(fondo1, (-PosicionXCamara, 0))
+        pantalla.blit(fondo2, (-PosicionXCamara + 2000, 0))
+        pantalla.blit(fondo3, (-PosicionXCamara + 4000, 0))
+        pantalla.blit(fondo4, (-PosicionXCamara + 6000, 0))
 
         # Jugador
-        pantalla.blit(JugadorEstado, (Jugador.x - cam_x, Jugador.y))
-        pantalla.blit(ImgSecreto,(Secreto.x - cam_x, Secreto.y))
-
+        pantalla.blit(JugadorEstado, (Jugador.x - PosicionXCamara, Jugador.y))
         pygame.display.update()
         reloj.tick(60)
+
+#Musica del Juego
+def musica():
+ pygame.mixer.music.load("musica/FUERZA-REGIDA-TU-SANCHO-_VIDEO-OFICIAL_.wav")
+ pygame.mixer.music.play(-1)
+ pygame.mixer.music.set_volume(100)
