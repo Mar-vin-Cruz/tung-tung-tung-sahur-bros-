@@ -1,8 +1,12 @@
 import pygame
 
+<<<<<<< HEAD
 # ============================
 #        MENU
 # ============================
+=======
+
+>>>>>>> 4dfedba561381170b07f82438b4fc7b323e660ae
 Jugando2 = False 
 while Jugando2 == False:
     opcion = str(input("seleccione una Opcion: "))
@@ -76,7 +80,17 @@ vida = 1   # <<------ SOLO 1 VIDA
 Jugando = True
 reloj = pygame.time.Clock()
 
+<<<<<<< HEAD
 # OBJETOS
+=======
+#Game Over
+try:
+    Game_Over_Fuente = pygame.font.Font(None,74)
+except:
+    Game_Over_Fuente = pygame.font.SysFont("Arial",74)
+
+#objetos(eje x,y,resolucion de pixeles)
+>>>>>>> 4dfedba561381170b07f82438b4fc7b323e660ae
 PlataformaImagen = "Objetos/PlataformaUa.png"
 Plataforma = pygame.Rect(7800,400,96,96)
 ImgPla = pygame.transform.scale(pygame.image.load(PlataformaImagen), (96,96))
@@ -89,8 +103,17 @@ fondo4 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,80
 
 # ENEMIGO (Homero)
 Homero = "Enemigos/Omero chino.gif"
+<<<<<<< HEAD
 Posicionxy_Hitbox_H = pygame.Rect(7800,515,1,1)  # HITBOX AJUSTADA AL TAMAÑO REAL
 Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (128,128))
+=======
+Secreto = pygame.Rect(7800,515,96,96)
+ImgSecreto = pygame.transform.scale(pygame.image.load(Homero), (96,96))
+enemigo_v_x = -3
+liminete_iz = 7000
+liminete_der = 7800
+
+>>>>>>> 4dfedba561381170b07f82438b4fc7b323e660ae
 
 # ====== CORAZONES ======
 ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (150,100))
@@ -163,7 +186,21 @@ while Jugando:
         VelEny = 0
         EnElSuelo = True
 
+<<<<<<< HEAD
     # Cámara
+=======
+    #Enemigo Movimiento del
+        Secreto.x += enemigo_v_x
+        if Secreto.x <= liminete_iz:
+            enemigo_v_x = abs(enemigo_v_x)
+        elif Secreto.x + Secreto.width >= liminete_der:
+            enemigo_v_x = -abs(enemigo_v_x)
+    #Colision
+    if Jugador.collidedict(Secreto):
+        Jugador = False
+
+    # --- Cámara ---
+>>>>>>> 4dfedba561381170b07f82438b4fc7b323e660ae
     cam_x = Jugador.x - 400
 
     # ANIMACIONES
