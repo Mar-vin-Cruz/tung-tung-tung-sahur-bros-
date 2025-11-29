@@ -209,3 +209,11 @@ def musica():
  pygame.mixer.music.load("musica/FUERZA-REGIDA-TU-SANCHO-_VIDEO-OFICIAL_.wav")
  pygame.mixer.music.play(-1)
  pygame.mixer.music.set_volume(100)
+
+#Despedida
+def Despedida():
+    figDespedida = Figlet(font="ANSI_Shadow")
+    ADIOS = fig.renderText("ADIOS...")
+    print(Fore.RED + ADIOS)
+    print(Style.RESET_ALL)
+     

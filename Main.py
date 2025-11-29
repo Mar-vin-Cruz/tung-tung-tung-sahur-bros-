@@ -21,7 +21,6 @@ while MenuPrincipal:
         
         #FALTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         elif opcion == 3:
-            print("Aqui va la despedida")
             break
         ###################################################
 
@@ -32,4 +31,7 @@ while MenuPrincipal:
         print("Solo numeros del 1 al 3")
 
 #Juego
-Funciones.Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI)
+try:
+    Funciones.Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI)
+except NameError:
+    Funciones.Despedida()
