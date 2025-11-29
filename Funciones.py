@@ -84,6 +84,12 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     fondo4 = pygame.image.load("mapa de fondo.png")
     fondo4 = pygame.transform.scale(fondo4, (2000,800))
 
+
+    # ====== CORAZONES ======
+    ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (150,100))
+    ImgCorazonVacio = pygame.transform.scale(pygame.image.load("Corazon Vasio.png"), (150,100))
+
+
     # --- Animaciones caminar ---
     CaminarD = [
         pygame.image.load(ImgQuietoD),
@@ -187,6 +193,8 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
                 JugadorEstado = Quieto
                 Contador = 0
 
+   
+
         # =====================
         #      DIBUJAR
         # =====================
@@ -203,6 +211,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         pantalla.blit(JugadorEstado, (Jugador.x - PosicionXCamara, Jugador.y))
         pygame.display.update()
         reloj.tick(60)
+
 
 #Musica del Juego
 def musica():
