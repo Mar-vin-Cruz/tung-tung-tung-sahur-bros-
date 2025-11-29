@@ -21,7 +21,7 @@ def mostrar_menu():
 def seleccion_pj():
         PersonajeExistente = False
         while PersonajeExistente == False:
-            Personajes = str(input("Selecciones un personaje (1-2):", ))
+            Personajes = str(input("Selecciones un personaje (1-3):", ))
 
             if Personajes == '1':
             
@@ -43,9 +43,18 @@ def seleccion_pj():
                     ImgSaltoD = "ImagenesTung/Tung Salto Derecha.png"
                     ImgSaltoI = "ImagenesTung/Tung Salto Izquierda.png"
                     PersonajeExistente = True
-                
+
+            elif Personajes == '3':
+                    ImgQuietoD = "ImagenesMago/Mago Quieto Derecha.png"
+                    ImgQuietoI = "ImagenesMago/Mago Quieto Izquierda.png"
+                    ImgCaminandoD = "ImagenesMago/Mago Caminando Derecha.png"
+                    ImgCaminandoI = "ImagenesMago/Mago Caminando Izquierda.png"
+                    ImgQuietoF = "ImagenesMago/Mago Quieto Frente.png"
+                    ImgSaltoD = "ImagenesMago/Mago Salto Derecha.png"
+                    ImgSaltoI = "ImagenesMago/Mago Salto Izquierda.png"
+                    PersonajeExistente = True
             else: 
-                print("Solo del 1 al 2")
+                print("Solo del 1 al 3")
         
         return ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI        
 
@@ -88,9 +97,9 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     ]
     AnimI = [pygame.transform.scale(imagen2, (96,96)) for imagen2 in CaminarI]
 
-    # --- Sprites volar ---
-    VolarD = pygame.transform.scale(pygame.image.load(ImgSaltoD), (96,96))
-    VolarI = pygame.transform.scale(pygame.image.load(ImgSaltoI), (96,96))
+    #Variables de salto
+    SaltoD = pygame.transform.scale(pygame.image.load(ImgSaltoD), (96,96))
+    SaltoI = pygame.transform.scale(pygame.image.load(ImgSaltoI), (96,96))
 
     # Quieto
     Quieto = pygame.transform.scale(pygame.image.load(ImgQuietoF), (96,96))
@@ -119,18 +128,18 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         Derecha = False
         Izquierda = False
 
-        # --- Movimiento horizontal ---
+        # Velocidad De desplasamiento Jugador
         if Movimiento[pygame.K_RIGHT]:
-            Jugador.x += 3
+            Jugador.x += 5
             Derecha = True
             direccion = "derecha"
 
         elif Movimiento[pygame.K_LEFT]:
-            Jugador.x -= 3
+            Jugador.x -= 5
             Izquierda = True
             direccion = "izquierda"
 
-        # --- Salto ---
+        # Velocidad de salto jugador
         if Movimiento[pygame.K_SPACE] and EnElSuelo:
             VelEny = -10
             EnElSuelo = False
@@ -150,11 +159,11 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
 
         # --- ANIMACIONES ---
         if not EnElSuelo:
-            # VOLANDO
+            # Saltar
             if Derecha:
-                JugadorEstado = VolarD
+                JugadorEstado = SaltoD
             elif Izquierda:
-                JugadorEstado = VolarI
+                JugadorEstado = SaltoI
             else:
                 JugadorEstado = Quieto
 
@@ -183,14 +192,14 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         # =====================
         pantalla.fill((0,0,0))
 
-        # Fondo
+        # Posicion de los Fondos
         pantalla.blit(fondo0, (-PosicionXCamara - 2000, 0))
         pantalla.blit(fondo1, (-PosicionXCamara, 0))
         pantalla.blit(fondo2, (-PosicionXCamara + 2000, 0))
         pantalla.blit(fondo3, (-PosicionXCamara + 4000, 0))
         pantalla.blit(fondo4, (-PosicionXCamara + 6000, 0))
 
-        # Jugador
+        # Posicion del Jugador
         pantalla.blit(JugadorEstado, (Jugador.x - PosicionXCamara, Jugador.y))
         pygame.display.update()
         reloj.tick(60)
