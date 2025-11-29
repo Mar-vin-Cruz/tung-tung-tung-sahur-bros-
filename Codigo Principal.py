@@ -1,12 +1,8 @@
 import pygame
 
-<<<<<<< HEAD
 # ============================
 #        MENU
 # ============================
-=======
-
->>>>>>> 4dfedba561381170b07f82438b4fc7b323e660ae
 Jugando2 = False 
 while Jugando2 == False:
     opcion = str(input("seleccione una Opcion: "))
@@ -73,24 +69,19 @@ pygame.mixer.init()
 
 pantalla = pygame.display.set_mode((1000,800))
 
-Jugador = pygame.Rect(200,515,1,1)
+Jugador = pygame.Rect(200,515,96,96)
 
 # VIDAS (solo 1 vida ahora)
 vida = 1   # <<------ SOLO 1 VIDA
 Jugando = True
 reloj = pygame.time.Clock()
 
-<<<<<<< HEAD
-# OBJETOS
-=======
-#Game Over
-try:
-    Game_Over_Fuente = pygame.font.Font(None,74)
-except:
-    Game_Over_Fuente = pygame.font.SysFont("Arial",74)
+# varibles de mocimiento de homero
+Velocidad_Enemigo = -3
+liminete_iz = 100
+liminete_der = 515
 
-#objetos(eje x,y,resolucion de pixeles)
->>>>>>> 4dfedba561381170b07f82438b4fc7b323e660ae
+# OBJETOS
 PlataformaImagen = "Objetos/PlataformaUa.png"
 Plataforma = pygame.Rect(7800,400,96,96)
 ImgPla = pygame.transform.scale(pygame.image.load(PlataformaImagen), (96,96))
@@ -102,18 +93,9 @@ fondo3 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,80
 fondo4 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
 
 # ENEMIGO (Homero)
-Homero = "Enemigos/Omero chino.gif"
-<<<<<<< HEAD
-Posicionxy_Hitbox_H = pygame.Rect(7800,515,1,1)  # HITBOX AJUSTADA AL TAMAÑO REAL
-Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (128,128))
-=======
-Secreto = pygame.Rect(7800,515,96,96)
-ImgSecreto = pygame.transform.scale(pygame.image.load(Homero), (96,96))
-enemigo_v_x = -3
-liminete_iz = 7000
-liminete_der = 7800
-
->>>>>>> 4dfedba561381170b07f82438b4fc7b323e660ae
+Homero = "Enemigos/Plataforma.png"
+Posicionxy_Hitbox_H = pygame.Rect(7800,515,96,96)  # HITBOX AJUSTADA AL TAMAÑO REAL
+Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96))
 
 # ====== CORAZONES ======
 ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (150,100))
@@ -186,21 +168,7 @@ while Jugando:
         VelEny = 0
         EnElSuelo = True
 
-<<<<<<< HEAD
     # Cámara
-=======
-    #Enemigo Movimiento del
-        Secreto.x += enemigo_v_x
-        if Secreto.x <= liminete_iz:
-            enemigo_v_x = abs(enemigo_v_x)
-        elif Secreto.x + Secreto.width >= liminete_der:
-            enemigo_v_x = -abs(enemigo_v_x)
-    #Colision
-    if Jugador.collidedict(Secreto):
-        Jugador = False
-
-    # --- Cámara ---
->>>>>>> 4dfedba561381170b07f82438b4fc7b323e660ae
     cam_x = Jugador.x - 400
 
     # ANIMACIONES
@@ -232,18 +200,24 @@ while Jugando:
     #    COLISIÓN CON HOMERO (SIN INVENCIBILIDAD)
     # ============================
 
-    if Jugador.colliderect(Secreto):
+    if Jugador.colliderect(Posicionxy_Hitbox_H):
         vida -= 1
-        Jugador.x -= 40  # Retroceso
         print("HOMERO TE HIZO DAÑO!")
 
     if vida <= 0:
         print("MORISTE! Homero te destruyó.")
         Jugando = False
 
-    # ============================
-    #        DIBUJAR
-    # ============================
+    #Enemigo Movimiento del
+    Posicionxy_Hitbox_H.y += Velocidad_Enemigo
+    if Posicionxy_Hitbox_H.y <= liminete_iz:
+        Velocidad_Enemigo = abs(Velocidad_Enemigo)
+    elif Posicionxy_Hitbox_H.y +Posicionxy_Hitbox_H .width >= liminete_der:
+        Velocidad_Enemigo = -abs(Velocidad_Enemigo)
+
+    
+    # Color de la terminal
+
     pantalla.fill((0,0,0))
 
     pantalla.blit(fondo1, (-cam_x, 0))
@@ -252,7 +226,7 @@ while Jugando:
     pantalla.blit(fondo4, (-cam_x + 6000, 0))
 
     pantalla.blit(JugadorEstado, (Jugador.x - cam_x, Jugador.y))
-    pantalla.blit(ImgSecreto,(Secreto.x - cam_x, Secreto.y))
+    pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - cam_x, Posicionxy_Hitbox_H.y))
     pantalla.blit(ImgPla, (Plataforma.x - cam_x, Plataforma.y))
 
     # DIBUJAR CORAZÓN ÚNICO
@@ -260,6 +234,7 @@ while Jugando:
         pantalla.blit(ImgCorazon, (20,20))
     else:
         pantalla.blit(ImgCorazonVacio, (20,20))
+
 
     pygame.display.update()
     reloj.tick(60)
