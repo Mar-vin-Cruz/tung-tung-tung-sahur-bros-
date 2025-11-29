@@ -1,6 +1,5 @@
 from pyfiglet import Figlet
 from colorama import Fore, Style
-import pandas as pd
 import matplotlib.pyplot as plt
 import pygame
 
