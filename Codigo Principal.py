@@ -72,9 +72,20 @@ pantalla = pygame.display.set_mode((1000,800))
 #poscion x y hitbox
 Jugador = pygame.Rect(200,515,1,1)
 
+#Puntos y tiempo
+Limite_tiempo = 180
+Puntos_iniciales = 1000
+Perdida_por_s = 10
+Bonificador = 0.2
+
+
 # VIDAS
 vida = 1   
 Jugando = True
+tiempo_agotado = False
+puntos_actual = Puntos_iniciales
+puntos_final = 0
+tiempo_inicial = pygame.time.get_ticks()
 reloj = pygame.time.Clock()
 
 # Velocidad, y desplazamineto x o y
@@ -147,6 +158,19 @@ while Jugando:
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
             Jugando = False
+
+        tiempo_de_juego_ms = pygame.time.get_ticks() - tiempo_inicial
+        tiempo_de_juego_seg = tiempo_de_juego_ms // 1000
+
+        tiempo_res_seg = Limite_tiempo - tiempo_de_juego_seg
+
+    #Perdida de puntos
+        puntos_actual = max(0, Puntos_iniciales -(tiempo_de_juego_seg * Perdida_por_s))
+
+        if tiempo_de_juego_seg >= Limite_tiempo:
+          Jugador = False
+          tiempo_agotado = True
+        
 
     Movimiento = pygame.key.get_pressed()
     Derecha = False
@@ -267,6 +291,19 @@ while Jugando:
         pantalla.blit(ImgCorazon, (20,20))
     else:
         pantalla.blit(ImgCorazonVacio, (20,20))
+    
+    #Dibujar puntos y tiempo
+    F_hud = pygame.font.Font(None, 40)
+
+    texto_puntos = F_hud.render(f"Puntos:{puntos_actual}", True, (255, 255, 255))
+    pantalla.blit(texto_puntos, (550, 40))
+
+    #tiempo restante ms
+    minutos = max(0, tiempo_res_seg) //60
+    segundos = max(0, tiempo_res_seg) % 60
+
+    texto_tiempo = F_hud.render(f"Tiempo: {minutos:02}:{segundos:02}", True, (255, 255, 255))
+    pantalla.blit(texto_tiempo, (500, 20))
 
 
     pygame.display.update()
