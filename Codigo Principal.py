@@ -1,19 +1,16 @@
 import pygame
-import Corridos_Chidos
-import Menu
 
-
+# ============================
+#        MENU
+# ============================
 Jugando2 = False 
 while Jugando2 == False:
-    Menu.mostrar_menu()
     opcion = str(input("seleccione una Opcion: "))
     if opcion == '1':
         print("1: Pato")
         print("2: TungTungsahur")
         print("3: Mago")
         print("4: Amongus")
-
-
 
         Personajes = str(input("Selecciones un personaje (1-3):", ))
 
@@ -27,7 +24,6 @@ while Jugando2 == False:
             ImgSaltoI = "ImagenesPato/Pato Salto Izquierda.png"
             Jugando2 = True
             
-        
         elif Personajes == '2':
             ImgQuietoD = "ImagenesTung/Tung Quieto Derecha.png"
             ImgQuietoI = "ImagenesTung/Tung Quieto Izquierda.png"
@@ -64,181 +60,216 @@ while Jugando2 == False:
          print("Gracias por jugar")
          break
 
+# ============================
+#        JUEGO
+# ============================
+
 pygame.init()
 pygame.mixer.init()
-Corridos_Chidos.musica()
 
 pantalla = pygame.display.set_mode((1000,800))
 
-Jugador = pygame.Rect(200,515,96,96)
+#poscion x y hitbox
+Jugador = pygame.Rect(200,515,1,1)
 
+# VIDAS
+vida = 1   
 Jugando = True
 reloj = pygame.time.Clock()
 
-#Game Over
-try:
-    Game_Over_Fuente = pygame.font.Font(None,74)
-except:
-    Game_Over_Fuente = pygame.font.SysFont("Arial",74)
+# Velocidad, y desplazamineto x o y
+Velocidad_Enemigo = -3
+liminete_iz_H = 7000
+liminete_der_H = 7800
+liminete_iz_G = 2000
+liminete_der_G = 2800
 
-#objetos(eje x,y,resolucion de pixeles)
-PlataformaImagen = "Objetos/PlataformaUa.png"
-Plataforma = pygame.Rect(7800,400,96,96)
-ImgPla = pygame.transform.scale(pygame.image.load(PlataformaImagen), (96,96))
 
-# --- FONDO ---
-fondo1 = pygame.image.load("mapa de fondo.png")
-fondo1= pygame.transform.scale(fondo1, (2000,800))
+# OBJETOS
+Plataforma = "Objetos/PlataformaUa.png"
+Posicionxy_Hitbox_P = pygame.Rect(250,515,96,96)
+Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (96,96))
 
-fondo2 = pygame.image.load("mapa de fondo.png")
-fondo2 = pygame.transform.scale(fondo2, (2000,800))
+# FONDOS 
+fondo1 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
+fondo2 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
+fondo3 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
+fondo4 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
 
-fondo3 = pygame.image.load("mapa de fondo.png")
-fondo3 = pygame.transform.scale(fondo3, (2000,800))
-
-fondo4 = pygame.image.load("mapa de fondo.png")
-fondo4 = pygame.transform.scale(fondo4, (2000,800))
-
-# enemigos
+# ENEMIGO (Homero)
 Homero = "Enemigos/Omero chino.gif"
-Secreto = pygame.Rect(7800,515,96,96)
-ImgSecreto = pygame.transform.scale(pygame.image.load(Homero), (96,96))
-enemigo_v_x = -3
-liminete_iz = 7000
-liminete_der = 7800
+Posicionxy_Hitbox_H = pygame.Rect(7000,515,96,96)  # HITBOX 
+Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96)) # Tamano
+# ENEMIGO (Green)
+Green = "Enemigos/Grenn_quieto.png"
+Posicionxy_Hitbox_G = pygame.Rect(2000,515,96,96)  # HITBOX 
+Escala_de_G = pygame.transform.scale(pygame.image.load(Green), (96,96)) # Tamano
 
+# ====== CORAZONES ======
+ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (150,100))
+ImgCorazonVacio = pygame.transform.scale(pygame.image.load("Corazon Vasio.png"), (150,100))
 
-# --- Animaciones caminar ---
+# Animaciones caminar
 CaminarD = [
     pygame.image.load(ImgCaminandoD),
     pygame.image.load(ImgQuietoD),
 ]
-AnimD = [pygame.transform.scale(imagen1, (96,96)) for imagen1 in CaminarD]
+AnimD = [pygame.transform.scale(i, (96,96)) for i in CaminarD]
 
 CaminarI = [
     pygame.image.load(ImgCaminandoI),
     pygame.image.load(ImgQuietoI),
 ]
-AnimI = [pygame.transform.scale(imagen2, (96,96)) for imagen2 in CaminarI]
+AnimI = [pygame.transform.scale(i, (96,96)) for i in CaminarI]
 
-# Varibles de saltos
+# Saltos
 SaltoD = pygame.transform.scale(pygame.image.load(ImgSaltoD), (96,96))
 SaltoI = pygame.transform.scale(pygame.image.load(ImgSaltoI), (96,96))
 
 # Quieto
 Quieto = pygame.transform.scale(pygame.image.load(ImgQuietoF), (96,96))
 
-# Físicas
+# Fisicas
 VelEny = 0
 Gravedad = 0.5
 EnElSuelo = True
 
-# Animación
 Contador = 0
-
-# Cámara
 cam_x = 0
-
-# Dirección
 direccion = "derecha"
 
+# ============================
+#       LOOP PRINCIPAL
+# ============================
+
 while Jugando:
+
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
             Jugando = False
 
     Movimiento = pygame.key.get_pressed()
-
     Derecha = False
     Izquierda = False
 
-    # --- Movimiento horizontal ---
+    # Movimiento horizontal
     if Movimiento[pygame.K_RIGHT]:
-        Jugador.x += 10
-        Jugador.x += 6
+        Jugador.x += 16
         Derecha = True
         direccion = "derecha"
 
     elif Movimiento[pygame.K_LEFT]:
-        Jugador.x -= 10
-        Jugador.x -= 6
+        Jugador.x -= 16
         Izquierda = True
         direccion = "izquierda"
 
-    # --- Salto ---
+    # Salto
     if Movimiento[pygame.K_SPACE] and EnElSuelo:
         VelEny = -10
         EnElSuelo = False
 
-    # --- Gravedad ---
     VelEny += Gravedad
     Jugador.y += VelEny
 
-    # Suelo
+
     if Jugador.y >= 515:
         Jugador.y = 515
         VelEny = 0
         EnElSuelo = True
 
-    #Enemigo Movimiento del
-        Secreto.x += enemigo_v_x
-        if Secreto.x <= liminete_iz:
-            enemigo_v_x = abs(enemigo_v_x)
-        elif Secreto.x + Secreto.width >= liminete_der:
-            enemigo_v_x = -abs(enemigo_v_x)
-    #Colision
-    if Jugador.collidedict(Secreto):
-        Jugador = False
-
-    # --- Cámara ---
+    # Cámara
     cam_x = Jugador.x - 400
 
-    # --- ANIMACIONES ---
+    # ANIMACIONES
     if not EnElSuelo:
-        # Brincando
         if Derecha:
             JugadorEstado = SaltoD
         elif Izquierda:
             JugadorEstado = SaltoI
         else:
             JugadorEstado = Quieto
-
     else:
-        # CAMINANDO DERECHA
         if Derecha:
             Contador += 0.15
             if Contador >= len(AnimD):
                 Contador = 0
             JugadorEstado = AnimD[int(Contador)]
 
-        # CAMINANDO IZQUIERDA
         elif Izquierda:
             Contador += 0.15
             if Contador >= len(AnimI):
                 Contador = 0
             JugadorEstado = AnimI[int(Contador)]
 
-        # QUIETO
         else:
             JugadorEstado = Quieto
             Contador = 0
 
-    # =====================
-    #      DIBUJAR
-    # =====================
-    pantalla.fill((0,0,0))
+    # ============================
+    #    COLISIÓN De    ENemigos
+    # ============================
 
-    # Posicion de los fondos
+    if Jugador.colliderect(Posicionxy_Hitbox_H):
+        vida -= 1
+
+    elif vida <= 0:
+        Jugando = False
     
+    if Jugador.colliderect(Posicionxy_Hitbox_G):
+        vida -= 1
+
+
+    elif vida <= 0:
+        Jugando = False
+    
+    if Jugador.colliderect(Posicionxy_Hitbox_P):
+        vida == 1
+    
+    elif vida <= 0:
+        Jugando = False
+      
+    #Enememigos en el mapa
+
+    #Movimiento del enemigo en x y Homero
+    Posicionxy_Hitbox_H.x += Velocidad_Enemigo
+
+    if Posicionxy_Hitbox_H.x <= liminete_iz_H:
+        Velocidad_Enemigo = abs(Velocidad_Enemigo)
+    elif Posicionxy_Hitbox_H.x +Posicionxy_Hitbox_H .width >= liminete_der_H:
+        Velocidad_Enemigo = -abs(Velocidad_Enemigo)
+    #Movimiento del enemigo en x y Green
+    Posicionxy_Hitbox_G.x += Velocidad_Enemigo
+    if Posicionxy_Hitbox_G.x <= liminete_iz_G:
+        Velocidad_Enemigo = abs(Velocidad_Enemigo)
+    elif Posicionxy_Hitbox_G.x +Posicionxy_Hitbox_G .width >= liminete_der_G:
+        Velocidad_Enemigo = -abs(Velocidad_Enemigo)
+
+    
+
+    # Color de la terminal
+
+    pantalla.fill((0,0,0))
+    
+    #posicion de los fondos
     pantalla.blit(fondo1, (-cam_x, 0))
     pantalla.blit(fondo2, (-cam_x + 2000, 0))
     pantalla.blit(fondo3, (-cam_x + 4000, 0))
     pantalla.blit(fondo4, (-cam_x + 6000, 0))
-
-    # Posicion de las cosas
+    
+    #Mostrador de pantalla
     pantalla.blit(JugadorEstado, (Jugador.x - cam_x, Jugador.y))
-    pantalla.blit(ImgSecreto,(Secreto.x - cam_x, Secreto.y))
-    pantalla.blit(ImgPla, (Plataforma.x - cam_x, Plataforma.y))
+    pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - cam_x, Posicionxy_Hitbox_H.y))
+    pantalla.blit(Escala_de_G,(Posicionxy_Hitbox_G.x - cam_x, Posicionxy_Hitbox_G.y))
+    pantalla.blit(Escala_de_P, (Posicionxy_Hitbox_P.x - cam_x, Posicionxy_Hitbox_P.y))
+
+    # DIBUJAR CORAZÓN ÚNICO
+    if vida == 1:
+        pantalla.blit(ImgCorazon, (20,20))
+    else:
+        pantalla.blit(ImgCorazonVacio, (20,20))
+
 
     pygame.display.update()
     reloj.tick(60)
+
+
