@@ -64,6 +64,9 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     pygame.init()
     pygame.mixer.init()
     musica()
+    Homero = "Enemigos/Omero chino.gif"
+    Posicionxy_Hitbox_H = pygame.Rect(7800,515,96,96)  # HITBOX AJUSTADA AL TAMAÑO REAL
+    Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96))
     pantalla = pygame.display.set_mode((1000,800))
     Jugador = pygame.Rect(200,515,96,96)
     reloj = pygame.time.Clock()
