@@ -64,12 +64,18 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     pygame.init()
     pygame.mixer.init()
     musica()
-
+     
+    # Homero
     Homero = "Enemigos/Omero chino.gif"
-    Posicionxy_Hitbox_H = pygame.Rect(7800,515,96,96)  # HITBOX AJUSTADA AL TAMAÑO REAL
+    Posicionxy_Hitbox_H = pygame.Rect(7600,515,1,1)  # HITBOX AJUSTADA AL TAMAÑO REAL
     Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96))
+
+    # Tamano de la pantalla
     pantalla = pygame.display.set_mode((1000,800))
+
+    # pision x y, Hitbox
     Jugador = pygame.Rect(200,515,96,96)
+    
     reloj = pygame.time.Clock()
 
     # --- FONDO ---
@@ -99,6 +105,16 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     VelEny = 0
     Gravedad = 0.5
     EnElSuelo = True
+    
+    # Variables de velocidad
+    Velocidad_Enemigo_H = -3
+    Velocidad_Enemigo_G = -2
+
+    #Variables de limites
+    liminete_iz_H = 7000
+    liminete_der_H = 7600
+    liminete_iz_G = 2000
+    liminete_der_G = 2800
 
     # Animación
     Contador = 0
@@ -149,7 +165,8 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         VelEny += Gravedad
         Jugador.y += VelEny
         
-        # ===== LÍMITES DEL MAPA =====
+        # ===== LÍMITES DEL MAPA (Bordes)=====
+        
         if Jugador.left < Mapa_Inicio:
            Jugador.left = Mapa_Inicio
         
@@ -215,6 +232,9 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
 
         # Posicion del Jugador
         pantalla.blit(JugadorEstado, (Jugador.x - PosicionXCamara, Jugador.y))
+
+        # posicion Enemigos
+        pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - PosicionXCamara, Posicionxy_Hitbox_H.y))
         
         # Posicion de los corazones
         if Vida == 1:
@@ -222,6 +242,23 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
 
         else:
            pantalla.blit(ImgCorazonVacio, (20,20))
+
+        # Colisiones enemigos
+        if Jugador.colliderect(Posicionxy_Hitbox_H):
+            vida -= 1
+
+        if Jugador.colliderect(Posicionxy_Hitbox_G):
+            vida -= 1
+
+        if vida <= 0:
+            Jugando = False
+
+        # Enemigo Homero
+        Posicionxy_Hitbox_H.x += Velocidad_Enemigo_H
+        if Posicionxy_Hitbox_H.x <= liminete_iz_H:
+            Velocidad_Enemigo_H = abs(Velocidad_Enemigo_H)
+        elif Posicionxy_Hitbox_H.right >= liminete_der_H:
+            Velocidad_Enemigo_H = -abs(Velocidad_Enemigo_H)
 
         pygame.display.update()
         reloj.tick(60)
