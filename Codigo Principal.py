@@ -36,7 +36,7 @@ while Jugando2 == False:
             ImgQuietoI = "ImagenesTung/Tung Quieto Izquierda.png"
             ImgCaminandoD = "ImagenesTung/Tung Caminando Derecha.png"
             ImgCaminandoI = "ImagenesTung/Tung Caminando Izquierda.png"
-            ImgQuietoF = "ImagenesTung/Tung Quieto Frente.png"
+            ImgQuietoF = "ImagenesTung/Tung  Quieto Frente.png"
             ImgSaltoD = "ImagenesTung/Tung Salto Derecha.png"
             ImgSaltoI = "ImagenesTung/Tung Salto Izquierda.png"
             Jugando2 = True
@@ -112,12 +112,12 @@ liminete_der_G = 2800
 # OBJETOS
 Plataforma = "Objetos/PlataformaUa.png"
 
-PLATFORM_TOP_Y = 560 
+PLATFORM_TOP = 450
 PLATFORM_WIDTH = 96 
 PLATFORM_HEIGHT = 20
 
-Posicionxy_Hitbox_P = pygame.Rect(250, PLATFORM_TOP_Y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
-Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (PLATFORM_WIDTH, 96))
+Posicionxy_Hitbox_P = pygame.Rect(250, PLATFORM_TOP, PLATFORM_WIDTH, PLATFORM_HEIGHT)
+Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (PLATFORM_WIDTH, PLATFORM_HEIGHT))
 
 # FONDOS
 try:
@@ -238,29 +238,45 @@ while Jugando:
 
     # Salto
     if Movimiento[pygame.K_SPACE] and EnElSuelo:
-        VelEny = -10
         EnElSuelo = False
+        VelEny = -15
+        
 
     # Gravedad
     VelEny += Gravedad
     Jugador.y += VelEny
 
     # Plataforma
-    if Jugador.colliderect(Posicionxy_Hitbox_P):
-        if VelEny > 0 and (Jugador.bottom - VelEny) <= Posicionxy_Hitbox_P.top:
+    en_rango_horizontal = (
+    Jugador.right > Posicionxy_Hitbox_P.left and 
+    Jugador.left < Posicionxy_Hitbox_P.right
+)
+
+# Colisión cayendo (desde arriba)
+    EnElSuelo = False   # Primero asumimos que NO está en el suelo
+
+# --- COLISIÓN CON PLATAFORMA ---
+    en_rango_horizontal = (
+        Jugador.right > Posicionxy_Hitbox_P.left and 
+        Jugador.left < Posicionxy_Hitbox_P.right
+    )
+
+    # Cayendo → detectar plataforma desde arriba
+    if VelEny >= 0 and en_rango_horizontal:
+        if Jugador.bottom >= Posicionxy_Hitbox_P.top and (Jugador.bottom - VelEny) <= Posicionxy_Hitbox_P.top:
             Jugador.bottom = Posicionxy_Hitbox_P.top
             VelEny = 0
             EnElSuelo = True
-        elif VelEny < 0:
+
+    # Saltando → detectar techo de plataforma
+    elif VelEny < 0 and en_rango_horizontal:
+        if Jugador.top <= Posicionxy_Hitbox_P.bottom and (Jugador.top - VelEny) >= Posicionxy_Hitbox_P.bottom:
             Jugador.top = Posicionxy_Hitbox_P.bottom
             VelEny = 0
-    else:
-        if Jugador.y < 515:
-            EnElSuelo = False
 
-    # Suelo
-    if Jugador.y >= 515:
-        Jugador.y = 515
+    # --- SUELO ---
+    if Jugador.bottom >= 595:   # <-- Usa el BOTTOM del jugador
+        Jugador.bottom = 595
         VelEny = 0
         EnElSuelo = True
 
@@ -325,8 +341,8 @@ while Jugando:
     else:
         pantalla.fill((135, 206, 235)) 
 
-    pantalla.blit(JugadorEstado, (Jugador.x - cam_x, Jugador.y))
-    pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - cam_x, Posicionxy_Hitbox_H.y))
+    pantalla.blit(JugadorEstado, (Jugador.x - cam_x - 23, Jugador.y))
+    pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - cam_x -23, Posicionxy_Hitbox_H.y))
     pantalla.blit(Escala_de_G,(Posicionxy_Hitbox_G.x - cam_x, Posicionxy_Hitbox_G.y))
     pantalla.blit(Escala_de_P, (Posicionxy_Hitbox_P.x - cam_x, Posicionxy_Hitbox_P.y))
 

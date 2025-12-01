@@ -74,7 +74,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96))
 
     pantalla = pygame.display.set_mode((1000,800))
-    Jugador = pygame.Rect(200,515,96,96)
+    Jugador = pygame.Rect(200,515,32,32)
     reloj = pygame.time.Clock()
 
     fondo= pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
@@ -101,15 +101,15 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     EnElSuelo = True
     
     Velocidad_Enemigo_H = -3
-    liminete_iz_H = 7000
-    liminete_der_H = 7600
+    liminete_iz_H = 7200
+    liminete_der_H = 7800
 
     Contador = 0
     PosicionXCamara = 0
     direccion = "derecha"
 
-    Mapa_Inicio = -2000
-    Mapa_Fin = 8000  
+    Mapa_Inicio = 0
+    Mapa_Fin = 9450
 
     Vida = 1
     ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (200,96))
@@ -198,6 +198,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         pantalla.blit(fondo, (-PosicionXCamara + 2000, 0))
         pantalla.blit(fondo, (-PosicionXCamara + 4000, 0))
         pantalla.blit(fondo, (-PosicionXCamara + 6000, 0))
+        pantalla.blit(fondo, (-PosicionXCamara + 8000, 0))
 
         pantalla.blit(JugadorEstado, (Jugador.x - PosicionXCamara, Jugador.y))
         pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - PosicionXCamara, Posicionxy_Hitbox_H.y))
