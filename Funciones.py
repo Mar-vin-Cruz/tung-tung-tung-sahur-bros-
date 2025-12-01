@@ -2,6 +2,8 @@ import pygame
 from pyfiglet import Figlet
 from colorama import Fore, Style
 import matplotlib.pyplot as plt
+import pandas as pd
+from datetime import datetime
 
 fig = Figlet(font="ANSI_Shadow")
 Titulo = fig.renderText("Tung Tung Bros")
@@ -15,6 +17,9 @@ def mostrar_menu():
     print(Fore.RED + "3-Salir")
     print(Style.RESET_ALL)
     print("------------------")
+
+def ingreso_name():
+    Nombre = str(input("Ingrese su nombre: "))
 
 def seleccion_pj():
     PersonajeExistente = False
@@ -118,6 +123,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     while Jugando:
         for i in pygame.event.get():
             if i.type == pygame.QUIT:
+                
                 Jugando = False
 
         Movimiento = pygame.key.get_pressed()
@@ -148,6 +154,8 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
            Jugador.right = Mapa_Fin
 
         if Jugador.right >= Mapa_Fin:
+           
+           
            Jugando = False
 
         if Jugador.y >= 515:
@@ -222,6 +230,13 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             Vida -= 1
 
         if Vida <= 0:
+
+            with open("Estadisticas.txt", "a") as f:
+                puntosG = (puntos_actual),
+                Fecha = (datetime.now().strftime("%d-%m-%Y"))
+                f.write(f"{Nombre},{puntosG},{Fecha}\n")
+                print("== Venta agregada con éxito ==")
+            
             Jugando = False
 
         Posicionxy_Hitbox_H.x += Velocidad_Enemigo_H

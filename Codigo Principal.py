@@ -1,4 +1,6 @@
 import pygame
+import pandas as pd
+from datetime import datetime
 
 # ============================
 #         MENU
@@ -12,6 +14,7 @@ while Jugando2 == False:
     opcion = str(input("seleccione una Opcion: "))
 
     if opcion == '1':
+        nombre = str(input("Ingrese su nombre: "))
         print("\n1: Pato")
         print("2: TungTungsahur")
         print("3: Mago")
@@ -313,7 +316,18 @@ while Jugando:
     if Jugador.colliderect(Posicionxy_Hitbox_G):
         vida -= 1
 
-    if vida <= 0:
+    if vida <= 0 or tiempo_agotado:
+        with open("Estadisticas.txt", "a") as f:
+            puntosG = (puntos_actual),
+            Fecha = (datetime.now().strftime("%d-%m-%Y"))
+            f.write(f"{nombre},{puntosG},{Fecha}\n")
+            print("== Venta agregada con éxito ==")
+            
+                
+            df =pd.DataFrame("Estadisticas.txt")
+            print(df)
+
+
         Jugando = False
 
     # Enemigo Homero

@@ -16,8 +16,13 @@ while MenuPrincipal:
 
         #FALTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         elif opcion == 2:
-            print("Aqui van las estadisticas") 
-        ###################################################
+            
+            with open("Estadisticas.txt", "r") as f:
+                for linea in f:
+                    Nombre, puntosG, Fecha = linea.strip().split(";")
+                    print(f"{Nombre}: {puntosG}: {Fecha}")
+                    print("Aqui van las estadisticas") 
+            ###################################################
         
         #FALTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         elif opcion == 3:
@@ -33,3 +38,4 @@ while MenuPrincipal:
 #Juego
 
     Funciones.Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI)
+#El fabi se chingo su codigo
