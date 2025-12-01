@@ -22,7 +22,7 @@ def seleccion_pj():
         Personajes = str(input("Selecciones un personaje (1-3):", ))
 
         if Personajes == '1':
-            ImgQuietoD = "ImagenesPato/Pato Quieto Derecha.png"
+            ImugQietoD = "ImagenesPato/Pato Quieto Derecha.png"
             ImgQuietoI = "ImagenesPato/Pato Quieto Izquierda.png"
             ImgCaminandoD = "ImagenesPato/Pato Caminando Derecha.png"
             ImgCaminandoI = "ImagenesPato/Pato Caminando Izquierda.png"
