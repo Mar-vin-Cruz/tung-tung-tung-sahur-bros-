@@ -33,3 +33,4 @@ while MenuPrincipal:
 #Juego
 
     Funciones.Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI)
+#El fabi se chingo su codigo
