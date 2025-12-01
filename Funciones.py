@@ -64,6 +64,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     pygame.init()
     pygame.mixer.init()
     musica()
+
     Homero = "Enemigos/Omero chino.gif"
     Posicionxy_Hitbox_H = pygame.Rect(7800,515,96,96)  # HITBOX AJUSTADA AL TAMAÑO REAL
     Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96))
@@ -73,12 +74,6 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
 
     # --- FONDO ---
     fondo= pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
-
-
-    # ====== CORAZONES ======
-    ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (150,100))
-    ImgCorazonVacio = pygame.transform.scale(pygame.image.load("Corazon Vasio.png"), (150,100))
-
 
     # --- Animaciones caminar ---
     CaminarD = [
@@ -114,6 +109,16 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     # Dirección
     direccion = "derecha"
 
+    #Limites
+    # 
+    Mapa_Inicio = -2000
+    Mapa_Fin = 8000  
+
+    # Vida
+    Vida = 1
+    ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (150,96))
+    ImgCorazonVacio = pygame.transform.scale(pygame.image.load("Corazon Vasio.png"), (150,96))
+
     while Jugando:
         for i in pygame.event.get():
             if i.type == pygame.QUIT:
@@ -126,12 +131,12 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
 
         # Velocidad De desplasamiento Jugador
         if Movimiento[pygame.K_RIGHT]:
-            Jugador.x += 5
+            Jugador.x += 11
             Derecha = True
             direccion = "derecha"
 
         elif Movimiento[pygame.K_LEFT]:
-            Jugador.x -= 5
+            Jugador.x -= 11
             Izquierda = True
             direccion = "izquierda"
 
@@ -143,6 +148,17 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         # --- Gravedad ---
         VelEny += Gravedad
         Jugador.y += VelEny
+        
+        # ===== LÍMITES DEL MAPA =====
+        if Jugador.left < Mapa_Inicio:
+           Jugador.left = Mapa_Inicio
+        
+        if Jugador.right > Mapa_Fin:
+           Jugador.right = Mapa_Fin
+
+        if Jugador.right >= Mapa_Fin:
+           Jugando = False
+
 
         # Suelo
         if Jugador.y >= 515:
@@ -199,9 +215,16 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
 
         # Posicion del Jugador
         pantalla.blit(JugadorEstado, (Jugador.x - PosicionXCamara, Jugador.y))
+        
+        # Posicion de los corazones
+        if Vida == 1:
+           pantalla.blit(ImgCorazon, (20,20))
+
+        else:
+           pantalla.blit(ImgCorazonVacio, (20,20))
+
         pygame.display.update()
         reloj.tick(60)
-
 
 #Musica del Juego
 def musica():

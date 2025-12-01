@@ -1,11 +1,10 @@
 import pygame
 
 # ============================
-#        MENU
+#         MENU
 # ============================
 Jugando2 = False 
 while Jugando2 == False:
-    # Usamos un mensaje que no bloquee el input en el Immersive
     print("Seleccione una Opcion:")
     print("1: Jugar")
     print("2: Puntajes")
@@ -20,8 +19,6 @@ while Jugando2 == False:
 
         Personajes = str(input("Selecciones un personaje (1-4):", ))
 
-        # --- Carga de imágenes ---
-        # Asegúrate de que las rutas de las imágenes son correctas en tu proyecto
         ImgQuietoD = ImgQuietoI = ImgCaminandoD = ImgCaminandoI = ImgQuietoF = ImgSaltoD = ImgSaltoI = None
 
         if Personajes == '1':
@@ -54,19 +51,19 @@ while Jugando2 == False:
             ImgSaltoI = "ImagenesMago/Mago Salto Izquierda.png"
             Jugando2 = True
 
-        elif Personajes== '4':
+        elif Personajes == '4':
             ImgQuietoD = "ImagenesAmongas/Amongus Quieto Derecha.png"
             ImgQuietoI = "ImagenesAmongas/Amongus Quieto Izquierda.png"
             ImgCaminandoD = "ImagenesAmongas/Amongus Caminando Derecha.png"
             ImgCaminandoI = "ImagenesAmongas/Amongus Caminando Izquierda.png"
-            ImgQuietoF = "Enemigos/Grenn_quieto.png"
+            ImgQuietoF = "ImagenesAmongas/CJ.png"
             ImgSaltoD = "ImagenesAmongas/Amongus Caminando Derecha.png"
             ImgSaltoI = "ImagenesAmongas/Amongus Caminando Izquierda.png"
             Jugando2 = True
         
         else:
             print("Selección de personaje no válida.")
-            continue # Volver al inicio del menú si la selección es inválida
+            continue
 
     elif opcion == '2':
         print("Puntajes no implementado aún.")
@@ -76,12 +73,11 @@ while Jugando2 == False:
     else:
         print("Opción no válida.")
 
-# Si salimos del bucle del menú por '3', terminamos.
 if Jugando2 == False and opcion != '1':
     exit()
 
 # ============================
-#        JUEGO
+#         JUEGO
 # ============================
 
 pygame.init()
@@ -89,19 +85,15 @@ pygame.mixer.init()
 
 pantalla = pygame.display.set_mode((1000,800))
 
-# ----------------------------
-# Ajustes del Jugador
-# ----------------------------
-Jugador = pygame.Rect(200, 515, 48, 80) # Posición inicial en el suelo
+# Jugador
+Jugador = pygame.Rect(200, 515, 48, 80)
 
-#Puntos y tiempo
+# Puntos / Tiempo
 Limite_tiempo = 180
 Puntos_iniciales = 1000
 Perdida_por_s = 10
 Bonificador = 0.2
 
-
-# VIDAS
 vida = 1
 Jugando = True
 tiempo_agotado = False
@@ -120,22 +112,14 @@ liminete_der_G = 2800
 # OBJETOS
 Plataforma = "Objetos/PlataformaUa.png"
 
-# *** CORRECCIÓN CRUCIAL DE PLATAFORMA ***
-# 1. Definimos la posición Y real donde se debe dibujar la imagen y colisionar.
-#    Antes la imagen se dibujaba en (550 - 76 = 474).
-# 2. La altura se aumenta de 1px a 20px para asegurar la colisión.
 PLATFORM_TOP_Y = 560 
 PLATFORM_WIDTH = 96 
 PLATFORM_HEIGHT = 20
 
-# La hitbox ahora está en la posición visible de la plataforma y es más gruesa.
 Posicionxy_Hitbox_P = pygame.Rect(250, PLATFORM_TOP_Y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
+Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (PLATFORM_WIDTH, 96))
 
-# La imagen de la plataforma debe coincidir con el tamaño de la hitbox.
-Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (PLATFORM_WIDTH, 96)) # Alto de la imagen 96px
-
-# FONDOS (Simplificado para evitar errores de archivo)
-# Asumo que tienes "mapa de fondo.png" o uso un color de fondo temporal.
+# FONDOS
 try:
     fondo1 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
     fondo2 = pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
@@ -146,22 +130,20 @@ except pygame.error:
     print("Advertencia: No se encontró 'mapa de fondo.png'. Usando fondo azul.")
     USAR_IMAGENES_FONDO = False
 
-# ENEMIGO (Homero)
-# ... (resto del código de enemigos, asumo que las rutas son válidas)
+# ENEMIGOS
 Homero = "Enemigos/Omero chino.gif"
-Posicionxy_Hitbox_H = pygame.Rect(7000,515,96,96)
+Posicionxy_Hitbox_H = pygame.Rect(7000,515,91,91)
 Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96))
 
-# ENEMIGO (Green)
 Green = "Enemigos/Grenn_quieto.png"
-Posicionxy_Hitbox_G = pygame.Rect(2000,515,96,96)
+Posicionxy_Hitbox_G = pygame.Rect(2000,515,1,1)
 Escala_de_G = pygame.transform.scale(pygame.image.load(Green), (96,96))
 
 # CORAZÓN
 ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (150,100))
 ImgCorazonVacio = pygame.transform.scale(pygame.image.load("Corazon Vasio.png"), (150,100))
 
-# Animaciones (Asumo que las rutas de imágenes son válidas)
+# Animación
 CaminarD = [
     pygame.image.load(ImgCaminandoD),
     pygame.image.load(ImgQuietoD),
@@ -178,6 +160,7 @@ SaltoD = pygame.transform.scale(pygame.image.load(ImgSaltoD), (96,96))
 SaltoI = pygame.transform.scale(pygame.image.load(ImgSaltoI), (96,96))
 Quieto = pygame.transform.scale(pygame.image.load(ImgQuietoF), (96,96))
 
+# Físicas
 VelEny = 0
 Gravedad = 0.5
 EnElSuelo = True
@@ -186,10 +169,16 @@ Contador = 0
 cam_x = 0
 direccion = "derecha"
 
+# ============================
+#     LÍMITES DEL MAPA
+# ============================
+MAPA_INICIO = 0
+MAPA_FIN = 8000  # 4 fondos de 2000 px
+
 DEBUG_DRAW_HITBOXES = True
 
 # ============================
-#       LOOP PRINCIPAL
+#     LOOP PRINCIPAL
 # ============================
 
 while Jugando:
@@ -203,13 +192,11 @@ while Jugando:
 
         tiempo_res_seg = Limite_tiempo - tiempo_de_juego_seg
 
-    #Perdida de puntos
         puntos_actual = max(0, Puntos_iniciales -(tiempo_de_juego_seg * Perdida_por_s))
 
         if tiempo_de_juego_seg >= Limite_tiempo:
-          Jugador = False
-          tiempo_agotado = True
-        
+            Jugando = False
+            tiempo_agotado = True
 
     Movimiento = pygame.key.get_pressed()
     Derecha = False
@@ -225,53 +212,50 @@ while Jugando:
         Izquierda = True
         direccion = "izquierda"
 
+    # ===== LÍMITES DEL MAPA =====
+    if Jugador.left < MAPA_INICIO:
+        Jugador.left = MAPA_INICIO
+
+    if Jugador.right > MAPA_FIN:
+        Jugador.right = MAPA_FIN
+
+    # Salto
     if Movimiento[pygame.K_SPACE] and EnElSuelo:
         VelEny = -10
         EnElSuelo = False
 
-    # Aplicar gravedad
+    # Gravedad
     VelEny += Gravedad
     Jugador.y += VelEny
 
-    # ===== COLISIÓN CON PLATAFORMA (LÓGICA CORRECTA) =====
-    # Si colisiona con la plataforma:
+    # Plataforma
     if Jugador.colliderect(Posicionxy_Hitbox_P):
-        # Si el jugador estaba cayendo (VelEny > 0) y su posición anterior (Jugador.bottom - VelEny)
-        # estaba por encima del top de la plataforma, significa que aterrizó.
         if VelEny > 0 and (Jugador.bottom - VelEny) <= Posicionxy_Hitbox_P.top:
-            Jugador.bottom = Posicionxy_Hitbox_P.top # Lo reposicionamos en la cima
+            Jugador.bottom = Posicionxy_Hitbox_P.top
             VelEny = 0
             EnElSuelo = True
-        # Esto previene que el jugador suba y se pegue a la parte inferior de la plataforma (colisión por debajo)
         elif VelEny < 0:
             Jugador.top = Posicionxy_Hitbox_P.bottom
             VelEny = 0
-    
-    # IMPORTANTE: Reajustamos EnElSuelo a FALSO si no hay colisión ni en el suelo principal
-    # para que la gravedad siga aplicando hasta el siguiente chequeo.
     else:
-        # Solo se pone en False si no está ya en el suelo principal (y=515)
         if Jugador.y < 515:
-             EnElSuelo = False 
-             
-    # Suelo Principal (siempre debe ir al final, es la colisión final)
+            EnElSuelo = False
+    
+    # Suelo
     if Jugador.y >= 515:
         Jugador.y = 515
         VelEny = 0
         EnElSuelo = True
 
+    # Cámara
     cam_x = Jugador.x - 400
 
     # Animación
     if not EnElSuelo:
         if direccion == "derecha":
             JugadorEstado = SaltoD
-        elif direccion == "izquierda":
-            JugadorEstado = SaltoI
         else:
-            # Si salta pero no se mueve horizontalmente, usa la imagen quieta
-            if direccion == "derecha": JugadorEstado = SaltoD
-            else: JugadorEstado = SaltoI # Si la última dirección fue a la izquierda, usa la imagen de salto I
+            JugadorEstado = SaltoI
     else:
         if Derecha:
             Contador += 0.15
@@ -299,40 +283,34 @@ while Jugando:
     if vida <= 0:
         Jugando = False
 
-    # Movimiento Homero
+    # Enemigo Homero
     Posicionxy_Hitbox_H.x += Velocidad_Enemigo_H
     if Posicionxy_Hitbox_H.x <= liminete_iz_H:
         Velocidad_Enemigo_H = abs(Velocidad_Enemigo_H)
     elif Posicionxy_Hitbox_H.right >= liminete_der_H:
         Velocidad_Enemigo_H = -abs(Velocidad_Enemigo_H)
 
-    # Movimiento Green
+    # Enemigo Green
     Posicionxy_Hitbox_G.x += Velocidad_Enemigo_G
     if Posicionxy_Hitbox_G.x <= liminete_iz_G:
         Velocidad_Enemigo_G = abs(Velocidad_Enemigo_G)
     elif Posicionxy_Hitbox_G.right >= liminete_der_G:
         Velocidad_Enemigo_G = -abs(Velocidad_Enemigo_G)
 
-    # --- DIBUJO ---
+    # === DIBUJO ===
     pantalla.fill((0,0,0))
     
-    # Dibujar fondos
     if USAR_IMAGENES_FONDO:
         pantalla.blit(fondo1, (-cam_x, 0))
         pantalla.blit(fondo2, (-cam_x + 2000, 0))
         pantalla.blit(fondo3, (-cam_x + 4000, 0))
         pantalla.blit(fondo4, (-cam_x + 6000, 0))
     else:
-        # Fondo azul si no hay imagen
         pantalla.fill((135, 206, 235)) 
     
-    # Dibujar objetos
     pantalla.blit(JugadorEstado, (Jugador.x - cam_x, Jugador.y))
     pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - cam_x, Posicionxy_Hitbox_H.y))
     pantalla.blit(Escala_de_G,(Posicionxy_Hitbox_G.x - cam_x, Posicionxy_Hitbox_G.y))
-
-    # IMAGEN PLATAFORMA: Ahora se dibuja en Posicionxy_Hitbox_P.y
-    # porque la Hitbox ya está en la altura correcta (474).
     pantalla.blit(Escala_de_P, (Posicionxy_Hitbox_P.x - cam_x, Posicionxy_Hitbox_P.y))
 
     if vida == 1:
@@ -340,26 +318,20 @@ while Jugando:
     else:
         pantalla.blit(ImgCorazonVacio, (20,20))
     
-    #Dibujar puntos y tiempo
     F_hud = pygame.font.Font(None, 40)
 
     texto_puntos = F_hud.render(f"Puntos:{puntos_actual}", True, (255, 255, 255))
     pantalla.blit(texto_puntos, (550, 40))
 
-    #tiempo restante ms
     minutos = max(0, tiempo_res_seg) //60
     segundos = max(0, tiempo_res_seg) % 60
 
     texto_tiempo = F_hud.render(f"Tiempo: {minutos:02}:{segundos:02}", True, (255, 255, 255))
     pantalla.blit(texto_tiempo, (500, 20))
 
-    # DIBUJO DE HITBOXES (MUY ÚTIL PARA DEBUGGING)
     if DEBUG_DRAW_HITBOXES:
-        # Jugador (Blanco)
         pygame.draw.rect(pantalla, (255,255,255), (Jugador.x - cam_x, Jugador.y, Jugador.width, Jugador.height), 2)
-        # Plataforma (Verde) - Ahora es más gruesa y está alineada con la imagen
         pygame.draw.rect(pantalla, (0,255,0), (Posicionxy_Hitbox_P.x - cam_x, Posicionxy_Hitbox_P.y, Posicionxy_Hitbox_P.width, Posicionxy_Hitbox_P.height), 2)
-        # Enemigos (Rojo)
         pygame.draw.rect(pantalla, (255,0,0), (Posicionxy_Hitbox_H.x - cam_x, Posicionxy_Hitbox_H.y, Posicionxy_Hitbox_H.width, Posicionxy_Hitbox_H.height), 2)
         pygame.draw.rect(pantalla, (255,0,0), (Posicionxy_Hitbox_G.x - cam_x, Posicionxy_Hitbox_G.y, Posicionxy_Hitbox_G.width, Posicionxy_Hitbox_G.height), 2)
 
