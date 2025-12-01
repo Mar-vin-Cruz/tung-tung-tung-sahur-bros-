@@ -31,7 +31,5 @@ while MenuPrincipal:
         print("Solo numeros del 1 al 3")
 
 #Juego
-try:
+
     Funciones.Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI)
-except NameError:
-    Funciones.Despedida()

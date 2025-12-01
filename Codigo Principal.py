@@ -10,7 +10,7 @@ while Jugando2 == False:
     print("2: Puntajes")
     print("3: Salir")
     opcion = str(input("seleccione una Opcion: "))
-    
+
     if opcion == '1':
         print("\n1: Pato")
         print("2: TungTungsahur")
@@ -30,7 +30,7 @@ while Jugando2 == False:
             ImgSaltoD = "ImagenesPato/Pato Salto Derecha.png"
             ImgSaltoI = "ImagenesPato/Pato Salto Izquierda.png"
             Jugando2 = True
-            
+
         elif Personajes == '2':
             ImgQuietoD = "ImagenesTung/Tung Quieto Derecha.png"
             ImgQuietoI = "ImagenesTung/Tung Quieto Izquierda.png"
@@ -60,7 +60,7 @@ while Jugando2 == False:
             ImgSaltoD = "ImagenesAmongas/Amongus Caminando Derecha.png"
             ImgSaltoI = "ImagenesAmongas/Amongus Caminando Izquierda.png"
             Jugando2 = True
-        
+
         else:
             print("Selección de personaje no válida.")
             continue
@@ -178,26 +178,43 @@ MAPA_FIN = 8000  # 4 fondos de 2000 px
 DEBUG_DRAW_HITBOXES = True
 
 # ============================
-#     LOOP PRINCIPAL
+#     LOOP PRINCIPAL (COMPLETO)
 # ============================
+
+# ----------------------------
+# CAMBIO: No moví/eliminé variables globales; el cambio está dentro del loop.
+# ----------------------------
 
 while Jugando:
 
+    # --- Eventos: sólo chequeamos QUIT aquí (no calculamos tiempo dentro del for) ---
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
             Jugando = False
 
-        tiempo_de_juego_ms = pygame.time.get_ticks() - tiempo_inicial
-        tiempo_de_juego_seg = tiempo_de_juego_ms // 1000
+    # ==================================================
+    # CAMBIO #1: MOVÍ EL CÁLCULO DE TIEMPO Y PUNTOS FUERA DEL for
+    # EXPLICACIÓN: antes estaban dentro del for de eventos, por lo que
+    # si no había eventos (teclado, ratón, etc.) no se ejecutaban.
+    # Al estar fuera, se ejecutan cada iteración del loop (siempre).
+    # ==================================================
+    tiempo_de_juego_ms = pygame.time.get_ticks() - tiempo_inicial  # obtiene ms desde inicio
+    tiempo_de_juego_seg = tiempo_de_juego_ms // 1000  # convierte a segundos  # CAMBIO: ahora siempre calculado
 
-        tiempo_res_seg = Limite_tiempo - tiempo_de_juego_seg
+    tiempo_res_seg = Limite_tiempo - tiempo_de_juego_seg  # tiempo restante  # CAMBIO: ahora siempre calculado
 
-        puntos_actual = max(0, Puntos_iniciales -(tiempo_de_juego_seg * Perdida_por_s))
+    # Puntos se reducen según segundos transcurridos (siempre)
+    puntos_actual = max(0, Puntos_iniciales - (tiempo_de_juego_seg * Perdida_por_s))  # CAMBIO: ahora siempre calculado
 
-        if tiempo_de_juego_seg >= Limite_tiempo:
-            Jugando = False
-            tiempo_agotado = True
+    # Si se acaba el tiempo → fin del juego (mantengo tu variable tiempo_agotado)
+    if tiempo_de_juego_seg >= Limite_tiempo:
+        Jugando = False
+        tiempo_agotado = True
+    # ==================================================
+    # FIN CAMBIO #1
+    # ==================================================
 
+    # ===== MOVIMIENTO =====
     Movimiento = pygame.key.get_pressed()
     Derecha = False
     Izquierda = False
@@ -240,7 +257,7 @@ while Jugando:
     else:
         if Jugador.y < 515:
             EnElSuelo = False
-    
+
     # Suelo
     if Jugador.y >= 515:
         Jugador.y = 515
@@ -299,7 +316,7 @@ while Jugando:
 
     # === DIBUJO ===
     pantalla.fill((0,0,0))
-    
+
     if USAR_IMAGENES_FONDO:
         pantalla.blit(fondo1, (-cam_x, 0))
         pantalla.blit(fondo2, (-cam_x + 2000, 0))
@@ -307,23 +324,25 @@ while Jugando:
         pantalla.blit(fondo4, (-cam_x + 6000, 0))
     else:
         pantalla.fill((135, 206, 235)) 
-    
+
     pantalla.blit(JugadorEstado, (Jugador.x - cam_x, Jugador.y))
     pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - cam_x, Posicionxy_Hitbox_H.y))
     pantalla.blit(Escala_de_G,(Posicionxy_Hitbox_G.x - cam_x, Posicionxy_Hitbox_G.y))
     pantalla.blit(Escala_de_P, (Posicionxy_Hitbox_P.x - cam_x, Posicionxy_Hitbox_P.y))
 
+    # Corazón (NO SE MODIFICA)  <-- aquí no toqué nada
     if vida == 1:
         pantalla.blit(ImgCorazon, (20,20))
     else:
         pantalla.blit(ImgCorazonVacio, (20,20))
-    
+
+    # HUD
     F_hud = pygame.font.Font(None, 40)
 
     texto_puntos = F_hud.render(f"Puntos:{puntos_actual}", True, (255, 255, 255))
     pantalla.blit(texto_puntos, (550, 40))
 
-    minutos = max(0, tiempo_res_seg) //60
+    minutos = max(0, tiempo_res_seg) // 60
     segundos = max(0, tiempo_res_seg) % 60
 
     texto_tiempo = F_hud.render(f"Tiempo: {minutos:02}:{segundos:02}", True, (255, 255, 255))
@@ -337,3 +356,5 @@ while Jugando:
 
     pygame.display.update()
     reloj.tick(60)
+
+# FIN DEL JUEGO - puedes agregar pantalla de game over o volver al menú si quieres.

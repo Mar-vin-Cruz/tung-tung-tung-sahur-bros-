@@ -1,13 +1,12 @@
+import pygame
 from pyfiglet import Figlet
 from colorama import Fore, Style
 import matplotlib.pyplot as plt
-import pygame
 
 fig = Figlet(font="ANSI_Shadow")
 Titulo = fig.renderText("Tung Tung Bros")
 Jugando = False
 
-#Menu principal
 def mostrar_menu():
     print(Fore.GREEN + Titulo)
     print(Fore.LIGHTYELLOW_EX + "\n=======MENU=======")
@@ -17,71 +16,69 @@ def mostrar_menu():
     print(Style.RESET_ALL)
     print("------------------")
 
-#Seleccionar personajes(Imagenes)
 def seleccion_pj():
-        PersonajeExistente = False
-        while PersonajeExistente == False:
-            Personajes = str(input("Selecciones un personaje (1-3):", ))
+    PersonajeExistente = False
+    while PersonajeExistente == False:
+        Personajes = str(input("Selecciones un personaje (1-3):", ))
 
-            if Personajes == '1':
-            
-                    ImgQuietoD = "ImagenesPato/Pato Quieto Derecha.png"
-                    ImgQuietoI = "ImagenesPato/Pato Quieto Izquierda.png"
-                    ImgCaminandoD = "ImagenesPato/Pato Caminando Derecha.png"
-                    ImgCaminandoI = "ImagenesPato/Pato Caminando Izquierda.png"
-                    ImgQuietoF = "ImagenesPato/Pato Quieto Frente.png"
-                    ImgSaltoD = "ImagenesPato/Pato Salto Derecha.png"
-                    ImgSaltoI = "ImagenesPato/Pato Salto Izquierda.png"
-                    PersonajeExistente = True
-            
-            elif Personajes == '2':
-                    ImgQuietoD = "ImagenesTung/Tung Quieto Derecha.png"
-                    ImgQuietoI = "ImagenesTung/Tung Quieto Izquierda.png"
-                    ImgCaminandoD = "ImagenesTung/Tung Caminando Derecha.png"
-                    ImgCaminandoI = "ImagenesTung/Tung Caminando Izquierda.png"
-                    ImgQuietoF = "ImagenesTung/Tung  Quieto Frente.png"
-                    ImgSaltoD = "ImagenesTung/Tung Salto Derecha.png"
-                    ImgSaltoI = "ImagenesTung/Tung Salto Izquierda.png"
-                    PersonajeExistente = True
-
-            elif Personajes == '3':
-                    ImgQuietoD = "ImagenesMago/Mago Quieto Derecha.png"
-                    ImgQuietoI = "ImagenesMago/Mago Quieto Izquierda.png"
-                    ImgCaminandoD = "ImagenesMago/Mago Caminando Derecha.png"
-                    ImgCaminandoI = "ImagenesMago/Mago Caminando Izquierda.png"
-                    ImgQuietoF = "ImagenesMago/Mago Quieto Frente.png"
-                    ImgSaltoD = "ImagenesMago/Mago Salto Derecha.png"
-                    ImgSaltoI = "ImagenesMago/Mago Salto Izquierda.png"
-                    PersonajeExistente = True
-            else: 
-                print("Solo del 1 al 3")
+        if Personajes == '1':
+            ImgQuietoD = "ImagenesPato/Pato Quieto Derecha.png"
+            ImgQuietoI = "ImagenesPato/Pato Quieto Izquierda.png"
+            ImgCaminandoD = "ImagenesPato/Pato Caminando Derecha.png"
+            ImgCaminandoI = "ImagenesPato/Pato Caminando Izquierda.png"
+            ImgQuietoF = "ImagenesPato/Pato Quieto Frente.png"
+            ImgSaltoD = "ImagenesPato/Pato Salto Derecha.png"
+            ImgSaltoI = "ImagenesPato/Pato Salto Izquierda.png"
+            PersonajeExistente = True
         
-        return ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI        
+        elif Personajes == '2':
+            ImgQuietoD = "ImagenesTung/Tung Quieto Derecha.png"
+            ImgQuietoI = "ImagenesTung/Tung Quieto Izquierda.png"
+            ImgCaminandoD = "ImagenesTung/Tung Caminando Derecha.png"
+            ImgCaminandoI = "ImagenesTung/Tung Caminando Izquierda.png"
+            ImgQuietoF = "ImagenesTung/Tung  Quieto Frente.png"
+            ImgSaltoD = "ImagenesTung/Tung Salto Derecha.png"
+            ImgSaltoI = "ImagenesTung/Tung Salto Izquierda.png"
+            PersonajeExistente = True
 
-#Abrir juego    
+        elif Personajes == '3':
+            ImgQuietoD = "ImagenesMago/Mago Quieto Derecha.png"
+            ImgQuietoI = "ImagenesMago/Mago Quieto Izquierda.png"
+            ImgCaminandoD = "ImagenesMago/Mago Caminando Derecha.png"
+            ImgCaminandoI = "ImagenesMago/Mago Caminando Izquierda.png"
+            ImgQuietoF = "ImagenesMago/Mago Quieto Frente.png"
+            ImgSaltoD = "ImagenesMago/Mago Salto Derecha.png"
+            ImgSaltoI = "ImagenesMago/Mago Salto Izquierda.png"
+            PersonajeExistente = True
+        else: 
+            print("Solo del 1 al 3")
+    
+    return ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI        
+
 def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI):
     Jugando = True
     pygame.init()
     pygame.mixer.init()
     musica()
-     
-    # Homero
+
+    # -------------------------
+    # VARIABLES DEL TIEMPO Y PUNTOS
+    # -------------------------
+    tiempo_inicial = pygame.time.get_ticks()
+    Limite_tiempo = 100
+    Puntos_iniciales = 1000
+    Perdida_por_s = 10
+
     Homero = "Enemigos/Omero chino.gif"
-    Posicionxy_Hitbox_H = pygame.Rect(7600,515,1,1)  # HITBOX AJUSTADA AL TAMAÑO REAL
+    Posicionxy_Hitbox_H = pygame.Rect(7600,515,1,1)
     Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96))
 
-    # Tamano de la pantalla
     pantalla = pygame.display.set_mode((1000,800))
-
-    # pision x y, Hitbox
     Jugador = pygame.Rect(200,515,96,96)
-    
     reloj = pygame.time.Clock()
 
-    # --- FONDO ---
     fondo= pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
 
-    # --- Animaciones caminar ---
     CaminarD = [
         pygame.image.load(ImgQuietoD),
         pygame.image.load(ImgCaminandoD),
@@ -94,58 +91,39 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     ]
     AnimI = [pygame.transform.scale(imagen2, (96,96)) for imagen2 in CaminarI]
 
-    #Variables de salto
     SaltoD = pygame.transform.scale(pygame.image.load(ImgSaltoD), (96,96))
     SaltoI = pygame.transform.scale(pygame.image.load(ImgSaltoI), (96,96))
 
-    # Quieto
     Quieto = pygame.transform.scale(pygame.image.load(ImgQuietoF), (96,96))
 
-    # Físicas
     VelEny = 0
     Gravedad = 0.5
     EnElSuelo = True
     
-    # Variables de velocidad
     Velocidad_Enemigo_H = -3
-    Velocidad_Enemigo_G = -2
-
-    #Variables de limites
     liminete_iz_H = 7000
     liminete_der_H = 7600
-    liminete_iz_G = 2000
-    liminete_der_G = 2800
 
-    # Animación
     Contador = 0
-
-    # Cámara
     PosicionXCamara = 0
-
-    # Dirección
     direccion = "derecha"
 
-    #Limites
-    # 
     Mapa_Inicio = -2000
     Mapa_Fin = 8000  
 
-    # Vida
     Vida = 1
-    ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (150,96))
-    ImgCorazonVacio = pygame.transform.scale(pygame.image.load("Corazon Vasio.png"), (150,96))
-
+    ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (200,96))
+    ImgCorazonVacio = pygame.transform.scale(pygame.image.load("Corazon Vasio.png"), (200,96))
+    
     while Jugando:
         for i in pygame.event.get():
             if i.type == pygame.QUIT:
                 Jugando = False
 
         Movimiento = pygame.key.get_pressed()
-
         Derecha = False
         Izquierda = False
 
-        # Velocidad De desplasamiento Jugador
         if Movimiento[pygame.K_RIGHT]:
             Jugador.x += 11
             Derecha = True
@@ -156,16 +134,12 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             Izquierda = True
             direccion = "izquierda"
 
-        # Velocidad de salto jugador
         if Movimiento[pygame.K_SPACE] and EnElSuelo:
             VelEny = -10
             EnElSuelo = False
 
-        # --- Gravedad ---
         VelEny += Gravedad
         Jugador.y += VelEny
-        
-        # ===== LÍMITES DEL MAPA (Bordes)=====
         
         if Jugador.left < Mapa_Inicio:
            Jugador.left = Mapa_Inicio
@@ -176,84 +150,79 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         if Jugador.right >= Mapa_Fin:
            Jugando = False
 
-
-        # Suelo
         if Jugador.y >= 515:
             Jugador.y = 515
             VelEny = 0
             EnElSuelo = True
 
-        # --- Cámara ---
         PosicionXCamara = Jugador.x - 400
 
-        # --- ANIMACIONES ---
         if not EnElSuelo:
-            # Saltar
             if Derecha:
                 JugadorEstado = SaltoD
             elif Izquierda:
                 JugadorEstado = SaltoI
             else:
                 JugadorEstado = Quieto
-
         else:
-            # CAMINANDO DERECHA
             if Derecha:
                 Contador += 0.15
                 if Contador >= len(AnimD):
                     Contador = 0
                 JugadorEstado = AnimD[int(Contador)]
 
-            # CAMINANDO IZQUIERDA
             elif Izquierda:
                 Contador += 0.15
                 if Contador >= len(AnimI):
                     Contador = 0
                 JugadorEstado = AnimI[int(Contador)]
 
-            # QUIETO
             else:
                 JugadorEstado = Quieto
                 Contador = 0
 
-   
+        # ----------------------------------
+        # ACTUALIZAR TIEMPO Y PUNTOS
+        # ----------------------------------
+        tiempo_ms = pygame.time.get_ticks() - tiempo_inicial
+        tiempo_seg = tiempo_ms // 1000
+        tiempo_restante = Limite_tiempo - tiempo_seg
+        puntos_actual = max(0, Puntos_iniciales - tiempo_seg * Perdida_por_s)
 
-        # =====================
-        #      DIBUJAR
-        # =====================
+        if tiempo_seg >= Limite_tiempo:
+            Jugando = False
+
         pantalla.fill((0,0,0))
-
-        # Posicion de los Fondos
         pantalla.blit(fondo, (-PosicionXCamara - 2000, 0))
         pantalla.blit(fondo, (-PosicionXCamara, 0))
         pantalla.blit(fondo, (-PosicionXCamara + 2000, 0))
         pantalla.blit(fondo, (-PosicionXCamara + 4000, 0))
         pantalla.blit(fondo, (-PosicionXCamara + 6000, 0))
 
-        # Posicion del Jugador
         pantalla.blit(JugadorEstado, (Jugador.x - PosicionXCamara, Jugador.y))
-
-        # posicion Enemigos
         pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - PosicionXCamara, Posicionxy_Hitbox_H.y))
         
-        # Posicion de los corazones
         if Vida == 1:
-           pantalla.blit(ImgCorazon, (20,20))
-
+           pantalla.blit(ImgCorazon, (-65,-10))
         else:
-           pantalla.blit(ImgCorazonVacio, (20,20))
+           pantalla.blit(ImgCorazonVacio, (-65,-10))
 
-        # Colisiones enemigos
+        # --------------------------
+        # DIBUJAR TIEMPO Y PUNTOS
+        # --------------------------
+        font = pygame.font.SysFont(None, 50)
+        txt_tiempo = font.render(f"Tiempo: {tiempo_restante}", True, (255,255,255))
+        txt_puntos = font.render(f"Puntos: {puntos_actual}", True, (255,255,255))
+
+        pantalla.blit(txt_tiempo, (800,0))
+        pantalla.blit(txt_puntos, (800,50))
+
         if Jugador.colliderect(Posicionxy_Hitbox_H):
-            vida -= 1
+            Vida -= 1
 
-        if Jugador.colliderect(Posicionxy_Hitbox_G):
-            vida -= 1
-
-        if vida <= 0:
+        if Vida <= 0:
             Jugando = False
 
-        # Enemigo Homero
         Posicionxy_Hitbox_H.x += Velocidad_Enemigo_H
         if Posicionxy_Hitbox_H.x <= liminete_iz_H:
             Velocidad_Enemigo_H = abs(Velocidad_Enemigo_H)
@@ -263,16 +232,13 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         pygame.display.update()
         reloj.tick(60)
 
-#Musica del Juego
 def musica():
- pygame.mixer.music.load("musica/FUERZA-REGIDA-TU-SANCHO-_VIDEO-OFICIAL_.wav")
- pygame.mixer.music.play(-1)
- pygame.mixer.music.set_volume(100)
+    pygame.mixer.music.load("musica/FUERZA-REGIDA-TU-SANCHO-_VIDEO-OFICIAL_.wav")
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(100)
 
-#Despedida
 def Despedida():
     figDespedida = Figlet(font="ANSI_Shadow")
     ADIOS = fig.renderText("ADIOS...")
     print(Fore.RED + ADIOS)
     print(Style.RESET_ALL)
-     
