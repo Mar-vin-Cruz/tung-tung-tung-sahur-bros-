@@ -90,23 +90,30 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     
     #Enemigos
     Homero = "Enemigos/Omero chino.gif"
-    Posicionxy_Hitbox_H = pygame.Rect(7600,515,48,80)
+    Posicionxy_Hitbox_H = pygame.Rect(4500,520,48,80)
     Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96))
 
     Cj = "ImagenesAmongas/CJ.png"
-    Posicionxy_Hitbox_CJ = pygame.Rect(3500,515,48,80)
+    Posicionxy_Hitbox_CJ = pygame.Rect(4000,520,48,80)
     Escala_de_CJ = pygame.transform.scale(pygame.image.load(Cj), (96,96))
 
     Tralalero = "ImagenesAmongas/tralalero tralala.png"
-    Posicionxy_Hitbox_TRL = pygame.Rect(4500,515,80,80)
+    Posicionxy_Hitbox_TRL = pygame.Rect(3500,520,80,80)
     Escala_de_TRL = pygame.transform.scale(pygame.image.load(Tralalero), (128,96))
 
     
     Doom = "ImagenesAmongas/doom derecha .png"
-    Posicionxy_Hitbox_D = pygame.Rect(2500,515,48,80)
+    Posicionxy_Hitbox_D = pygame.Rect(3000,520,48,80)
     Escala_de_D = pygame.transform.scale(pygame.image.load(Doom), (96,128))
-
-
+    
+    Boo = "ImagenesAmongas/enemigo volador .png"
+    Posicionxy_Hitbox_N = pygame.Rect(2500,520,100,100)
+    Escala_de_N = pygame.transform.scale(pygame.image.load(Boo), (128,128))
+    
+    Cr7 = "ImagenesAmongas/Chilena de cr7.png"
+    Posicionxy_Hitbox_7 = pygame.Rect(5500,450,32,128)
+    Escala_de_7 = pygame.transform.scale(pygame.image.load(Cr7), (200,200))
+   
     pantalla = pygame.display.set_mode((1000,800))
     Jugador = pygame.Rect(200,515,48,80)
     reloj = pygame.time.Clock()
@@ -137,23 +144,28 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     # Rangos de enemigos
     #Homero
     Velocidad_Enemigo_H = -3
-    liminete_iz_H = 7200
-    liminete_der_H = 7800
+    liminete_iz_H = 4300
+    liminete_der_H = 4900
 
     #Cj 
     Velocidad_Enemigo_CJ = -3
-    liminete_iz_CJ = 3000
-    liminete_der_CJ = 4000
+    liminete_iz_CJ = 3800
+    liminete_der_CJ = 4300
 
     #Tralalero
     Velocidad_Enemigo_TRL = -3
-    liminete_iz_TRL = 4000
-    liminete_der_TRL = 5000
+    liminete_iz_TRL = 3200
+    liminete_der_TRL = 3800
 
     #DOOM
     Velocidad_Enemigo_D = -3
-    liminete_iz_D = 2500
-    liminete_der_D = 3000
+    liminete_iz_D = 2700
+    liminete_der_D = 3200
+
+    #No me demandes nintendo :(
+    Velocidad_Enemigo_N = -3
+    liminete_Sube_N = 300  
+    liminete_Baja_N = 515
 
     Contador = 0
     PosicionXCamara = 0
@@ -198,7 +210,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             direccion = "izquierda"
 
         if Movimiento[pygame.K_SPACE] and EnElSuelo:
-            VelEny = -10
+            VelEny = -15
             EnElSuelo = False
 
         VelEny += Gravedad
@@ -276,6 +288,9 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         pantalla.blit(Escala_de_CJ,(Posicionxy_Hitbox_CJ.x - PosicionXCamara -30, Posicionxy_Hitbox_CJ.y -15))
         pantalla.blit(Escala_de_TRL,(Posicionxy_Hitbox_TRL.x  - PosicionXCamara -30, Posicionxy_Hitbox_TRL.y -15))
         pantalla.blit(Escala_de_D,(Posicionxy_Hitbox_D.x - PosicionXCamara -30, Posicionxy_Hitbox_D.y -15))
+        pantalla.blit(Escala_de_N,(Posicionxy_Hitbox_N.x - PosicionXCamara -10, Posicionxy_Hitbox_N.y -15))
+        pantalla.blit(Escala_de_7,(Posicionxy_Hitbox_7.x - PosicionXCamara-100 , Posicionxy_Hitbox_7.y ))
+
         # ==================================
         #   MOSTRAR HITBOX (NUEVO)
         # ==================================
@@ -285,6 +300,8 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_CJ, PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_TRL, PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_D, PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Posicionxy_Hitbox_N, PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Posicionxy_Hitbox_7, PosicionXCamara, (255,0,0))
         
         if Vida == 1:
            pantalla.blit(ImgCorazon, (-65,-10))
@@ -309,6 +326,10 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             Vida -= 1
         
         if Jugador.colliderect(Posicionxy_Hitbox_CJ):
+            Vida -= 1
+        if Jugador.colliderect(Posicionxy_Hitbox_N):
+            Vida -= 1
+        if Jugador.colliderect(Posicionxy_Hitbox_7):
             Vida -= 1
 
         if Vida <= 0:
@@ -348,6 +369,13 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             Velocidad_Enemigo_D = abs(Velocidad_Enemigo_D)
         elif Posicionxy_Hitbox_D.right >= liminete_der_D:
             Velocidad_Enemigo_D = -abs(Velocidad_Enemigo_D)
+        
+        Posicionxy_Hitbox_N.y += Velocidad_Enemigo_N
+        if Posicionxy_Hitbox_N.y <= liminete_Sube_N:
+            Velocidad_Enemigo_N = abs(Velocidad_Enemigo_N)
+        elif Posicionxy_Hitbox_N.y >= liminete_Baja_N:
+            Velocidad_Enemigo_N = -abs(Velocidad_Enemigo_N)
+        
        
 
         pygame.display.update()
