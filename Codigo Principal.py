@@ -114,13 +114,7 @@ liminete_der_G = 2800
 
 # OBJETOS
 Plataforma = "Objetos/PlataformaUa.png"
-
-PLATFORM_TOP = 450
-PLATFORM_WIDTH = 96 
-PLATFORM_HEIGHT = 20
-
-Posicionxy_Hitbox_P = pygame.Rect(250, PLATFORM_TOP, PLATFORM_WIDTH, PLATFORM_HEIGHT)
-Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (PLATFORM_WIDTH, PLATFORM_HEIGHT))
+Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (96, 20))
 
 # FONDOS
 try:
@@ -162,6 +156,9 @@ AnimI = [pygame.transform.scale(i, (96,96)) for i in CaminarI]
 SaltoD = pygame.transform.scale(pygame.image.load(ImgSaltoD), (96,96))
 SaltoI = pygame.transform.scale(pygame.image.load(ImgSaltoI), (96,96))
 Quieto = pygame.transform.scale(pygame.image.load(ImgQuietoF), (96,96))
+
+Plataformas = [ pygame.Rect(0,595,8000,200),
+                pygame.Rect(250,450,96,20)]
 
 # Físicas
 VelEny = 0
@@ -249,39 +246,16 @@ while Jugando:
     VelEny += Gravedad
     Jugador.y += VelEny
 
-    # Plataforma
-    en_rango_horizontal = (
-    Jugador.right > Posicionxy_Hitbox_P.left and 
-    Jugador.left < Posicionxy_Hitbox_P.right
-)
-
-# Colisión cayendo (desde arriba)
-    EnElSuelo = False   # Primero asumimos que NO está en el suelo
-
-# --- COLISIÓN CON PLATAFORMA ---
-    en_rango_horizontal = (
-        Jugador.right > Posicionxy_Hitbox_P.left and 
-        Jugador.left < Posicionxy_Hitbox_P.right
-    )
-
-    # Cayendo → detectar plataforma desde arriba
-    if VelEny >= 0 and en_rango_horizontal:
-        if Jugador.bottom >= Posicionxy_Hitbox_P.top and (Jugador.bottom - VelEny) <= Posicionxy_Hitbox_P.top:
-            Jugador.bottom = Posicionxy_Hitbox_P.top
-            VelEny = 0
-            EnElSuelo = True
-
-    # Saltando → detectar techo de plataforma
-    elif VelEny < 0 and en_rango_horizontal:
-        if Jugador.top <= Posicionxy_Hitbox_P.bottom and (Jugador.top - VelEny) >= Posicionxy_Hitbox_P.bottom:
-            Jugador.top = Posicionxy_Hitbox_P.bottom
-            VelEny = 0
-
     # --- SUELO ---
-    if Jugador.bottom >= 595:   # <-- Usa el BOTTOM del jugador
-        Jugador.bottom = 595
-        VelEny = 0
-        EnElSuelo = True
+    for P in Plataformas:
+        if Jugador.colliderect(P):   # <-- Usa el BOTTOM del jugador
+            if VelEny > 0:
+                Jugador.bottom = P.top
+                VelEny = 0
+                EnElSuelo = True
+            elif VelEny < 0: 
+                Jugador.top = P.bottom
+                VelEny = 0
 
     # Cámara
     cam_x = Jugador.x - 400
@@ -358,7 +332,7 @@ while Jugando:
     pantalla.blit(JugadorEstado, (Jugador.x - cam_x - 23, Jugador.y))
     pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - cam_x -23, Posicionxy_Hitbox_H.y))
     pantalla.blit(Escala_de_G,(Posicionxy_Hitbox_G.x - cam_x, Posicionxy_Hitbox_G.y))
-    pantalla.blit(Escala_de_P, (Posicionxy_Hitbox_P.x - cam_x, Posicionxy_Hitbox_P.y))
+    pantalla.blit(Escala_de_P, (Plataformas[1].x - cam_x, Plataformas[1].y))
 
     # Corazón (NO SE MODIFICA)  <-- aquí no toqué nada
     if vida == 1:
@@ -380,7 +354,7 @@ while Jugando:
 
     if DEBUG_DRAW_HITBOXES:
         pygame.draw.rect(pantalla, (255,255,255), (Jugador.x - cam_x, Jugador.y, Jugador.width, Jugador.height), 2)
-        pygame.draw.rect(pantalla, (0,255,0), (Posicionxy_Hitbox_P.x - cam_x, Posicionxy_Hitbox_P.y, Posicionxy_Hitbox_P.width, Posicionxy_Hitbox_P.height), 2)
+        pygame.draw.rect(pantalla, (0,255,0), (Plataformas[1].x - cam_x, Plataformas[1].y, Plataformas[1].width, Plataformas[1].height), 2)
         pygame.draw.rect(pantalla, (255,0,0), (Posicionxy_Hitbox_H.x - cam_x, Posicionxy_Hitbox_H.y, Posicionxy_Hitbox_H.width, Posicionxy_Hitbox_H.height), 2)
         pygame.draw.rect(pantalla, (255,0,0), (Posicionxy_Hitbox_G.x - cam_x, Posicionxy_Hitbox_G.y, Posicionxy_Hitbox_G.width, Posicionxy_Hitbox_G.height), 2)
 
