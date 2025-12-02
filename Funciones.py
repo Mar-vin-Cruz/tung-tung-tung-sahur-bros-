@@ -6,7 +6,7 @@ import pandas as pd
 from datetime import datetime
 
 fig = Figlet(font="ANSI_Shadow")
-Titulo = fig.renderText("Tung Tung Bros")
+Titulo = fig.renderText("Universe Bros")
 Jugando = False
 
 # ==================================
@@ -21,13 +21,13 @@ def dibujar_hitbox(pantalla, rect, camara_x, color=(0,255,0)):
     )
 
 def mostrar_menu():
-    print(Fore.GREEN + Titulo)
+    print(Fore.BLUE + Titulo)
     print(Fore.LIGHTYELLOW_EX + "\n=======MENU=======")
     print(Fore.GREEN + "1-Jugar")
     print(Fore.BLUE + "2-Mostrar Puntajes")
     print(Fore.RED + "3-Salir")
+    print(Fore.LIGHTYELLOW_EX + "------------------")
     print(Style.RESET_ALL)
-    print("------------------")
 
 
 def seleccion_pj():
@@ -44,7 +44,7 @@ def seleccion_pj():
             ImgSaltoD = "ImagenesPato/Pato Salto Derecha.png"
             ImgSaltoI = "ImagenesPato/Pato Salto Izquierda.png"
             PersonajeExistente = True
-            Nombre = str(input("Ingrese su nombre: "))
+            Nombre = str(input(Fore.GREEN + "Ingrese su nombre: "))
             
         elif Personajes == '2':
             ImgQuietoD = "ImagenesTung/Tung Quieto Derecha.png"
@@ -55,7 +55,7 @@ def seleccion_pj():
             ImgSaltoD = "ImagenesTung/Tung Salto Derecha.png"
             ImgSaltoI = "ImagenesTung/Tung Salto Izquierda.png"
             PersonajeExistente = True
-            Nombre = str(input("Ingrese su nombre: "))
+            Nombre = str(input(Fore.GREEN + "Ingrese su nombre: "))
 
         elif Personajes == '3':
             ImgQuietoD = "ImagenesMago/Mago Quieto Derecha.png"
@@ -66,10 +66,10 @@ def seleccion_pj():
             ImgSaltoD = "ImagenesMago/Mago Salto Derecha.png"
             ImgSaltoI = "ImagenesMago/Mago Salto Izquierda.png"
             PersonajeExistente = True
-            Nombre = str(input("Ingrese su nombre: "))
+            Nombre = str(input(Fore.GREEN + "Ingrese su nombre: "))
          
         else: 
-            print("Solo del 1 al 3")
+            print(Fore.RED + "Solo del 1 al 3")
         
     return ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI, Nombre        
 
@@ -85,13 +85,13 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
  
     #Posicion plataformas
     Plataformas = [pygame.Rect(0,595,10000,20),#Piso,
-                   pygame.Rect(250,520,96,20),#Plataforma ejemplo,
-                   pygame.Rect(5300,515,96,20),
-                   pygame.Rect(800,535,96,20),#M
-                   pygame.Rect(600,435,96,20),#M
-                   pygame.Rect(800,335,96,20),#M
-                   pygame.Rect(600,235,96,20),#M
-                   pygame.Rect(800,135,96,20),#M
+                   pygame.Rect(250,520,85,20),#Plataforma ejemplo,
+                   pygame.Rect(5300,515,85,20),
+                   pygame.Rect(800,535,85,20),#M
+                   pygame.Rect(600,435,85,20),#M
+                   pygame.Rect(800,335,85,20),#M
+                   pygame.Rect(600,235,85,20),#M
+                   pygame.Rect(800,135,85,20),#M
 
 
     ]
@@ -269,7 +269,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
            with open("Estadisticas.txt", "a") as f:
                 Fecha = (datetime.now().strftime("%d-%m-%Y"))
                 f.write(f"{Nombre};{puntos_actual};{Fecha}\n")
-                print("== Venta agregada con éxito ==")
+                print(Fore.Red + "== Estadisticas agregada con éxito ==")
            Jugando = False
 
         PosicionXCamara = Jugador.x - 400
@@ -321,7 +321,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             with open("Estadisticas.txt", "a") as f:
                 Fecha = (datetime.now().strftime("%d-%m-%Y"))
                 f.write(f"{Nombre};{puntos_actual};{Fecha}\n")
-                print("== Venta agregada con éxito ==")
+                print(Fore.RED + "== Estadisticas agregada con éxito ==")
             Jugando = False
 
         pantalla.fill((0,0,0))
@@ -417,7 +417,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             with open("Estadisticas.txt", "a") as f:
                 Fecha = (datetime.now().strftime("%d-%m-%Y"))
                 f.write(f"{Nombre};{puntos_actual};{Fecha}\n")
-                print("== Venta agregada con éxito ==")
+                print(Fore.RED + "== Estadisticas agregada con éxito ==")
             
             Jugando = False
         

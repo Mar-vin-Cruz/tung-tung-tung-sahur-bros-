@@ -1,5 +1,6 @@
 import pygame
 import pandas as pd
+from colorama import Fore, Style
 import matplotlib.pyplot as plt
 import Funciones
 
@@ -9,7 +10,7 @@ MenuPrincipal = True
 while MenuPrincipal:
     Funciones.mostrar_menu()
     try:
-        opcion = str(input("seleccione una Opcion:", ))
+        opcion = str(input(Fore.GREEN + "seleccione una Opcion:", ))
 
         if opcion == '1':
             while True:
