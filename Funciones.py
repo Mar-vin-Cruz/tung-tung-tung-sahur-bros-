@@ -84,7 +84,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (96, 20))
  
     #Posicion plataformas
-    Plataformas = [pygame.Rect(0,595,8000,20),#Piso,
+    Plataformas = [pygame.Rect(0,595,10000,20),#Piso,
                    pygame.Rect(250,500,96,20)#Plataforma ejemplo,
 
     ]
