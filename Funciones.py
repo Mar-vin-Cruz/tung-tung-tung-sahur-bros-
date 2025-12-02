@@ -79,7 +79,15 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     pygame.init()
     pygame.mixer.init()
     musica()
+    
+    Plataforma = "Objetos/PlataformaUa.png"
+    Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (96, 20))
+ 
+    #Posicion plataformas
+    Plataformas = [pygame.Rect(0,595,8000,20),#Piso,
+                   pygame.Rect(250,500,96,20)#Plataforma ejemplo,
 
+    ]
     # -------------------------
     # VARIABLES DEL TIEMPO Y PUNTOS
     # -------------------------
@@ -198,7 +206,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             direccion = "izquierda"
 
         if Movimiento[pygame.K_SPACE] and EnElSuelo:
-            VelEny = -10
+            VelEny = -12
             EnElSuelo = False
 
         VelEny += Gravedad
@@ -216,11 +224,6 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
                 f.write(f"{Nombre};{puntos_actual};{Fecha}\n")
                 print("== Venta agregada con éxito ==")
            Jugando = False
-
-        if Jugador.y >= 515:
-            Jugador.y = 515
-            VelEny = 0
-            EnElSuelo = True
 
         PosicionXCamara = Jugador.x - 400
 
@@ -248,6 +251,17 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
                 JugadorEstado = Quieto
                 Contador = 0
 
+        #Colision con piso y plataformas
+        for P in Plataformas:
+            if Jugador.colliderect(P):   # <-- Usa el BOTTOM del jugador
+                if VelEny > 0:
+                    Jugador.bottom = P.top
+                    VelEny = 0
+                    EnElSuelo = True
+                elif VelEny < 0: 
+                    Jugador.top = P.bottom
+                    VelEny = 0
+                
         # --------------------------
         # TIEMPO Y PUNTOS
         # --------------------------
@@ -276,6 +290,11 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         pantalla.blit(Escala_de_CJ,(Posicionxy_Hitbox_CJ.x - PosicionXCamara -30, Posicionxy_Hitbox_CJ.y -15))
         pantalla.blit(Escala_de_TRL,(Posicionxy_Hitbox_TRL.x  - PosicionXCamara -30, Posicionxy_Hitbox_TRL.y -15))
         pantalla.blit(Escala_de_D,(Posicionxy_Hitbox_D.x - PosicionXCamara -30, Posicionxy_Hitbox_D.y -15))
+
+        #Ponerle la imagen a la plataforma y la hitbox
+        pantalla.blit(Escala_de_P, (Plataformas[1].x - PosicionXCamara, Plataformas[1].y))
+        pygame.draw.rect(pantalla, (0,255,0), (Plataformas[1].x - PosicionXCamara, Plataformas[1].y, Plataformas[1].width, Plataformas[1].height), 2)
+        
         # ==================================
         #   MOSTRAR HITBOX (NUEVO)
         # ==================================
@@ -285,6 +304,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_CJ, PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_TRL, PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_D, PosicionXCamara, (255,0,0))
+           
         
         if Vida == 1:
            pantalla.blit(ImgCorazon, (-65,-10))
