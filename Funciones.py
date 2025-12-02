@@ -87,13 +87,28 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     Limite_tiempo = 100
     Puntos_iniciales = 1000
     Perdida_por_s = 10
-
+    
+    #Enemigos
     Homero = "Enemigos/Omero chino.gif"
-    Posicionxy_Hitbox_H = pygame.Rect(7600,515,1,1)
+    Posicionxy_Hitbox_H = pygame.Rect(7600,515,48,80)
     Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96))
 
+    Cj = "ImagenesAmongas/CJ.png"
+    Posicionxy_Hitbox_CJ = pygame.Rect(3500,515,48,80)
+    Escala_de_CJ = pygame.transform.scale(pygame.image.load(Cj), (96,96))
+
+    Tralalero = "ImagenesAmongas/tralalero tralala.png"
+    Posicionxy_Hitbox_TRL = pygame.Rect(4500,515,80,80)
+    Escala_de_TRL = pygame.transform.scale(pygame.image.load(Tralalero), (128,96))
+
+    
+    Doom = "ImagenesAmongas/doom derecha .png"
+    Posicionxy_Hitbox_D = pygame.Rect(2500,515,48,80)
+    Escala_de_D = pygame.transform.scale(pygame.image.load(Doom), (96,128))
+
+
     pantalla = pygame.display.set_mode((1000,800))
-    Jugador = pygame.Rect(200,515,32,32)
+    Jugador = pygame.Rect(200,515,48,80)
     reloj = pygame.time.Clock()
 
     fondo= pygame.transform.scale(pygame.image.load("mapa de fondo.png"), (2000,800))
@@ -119,9 +134,26 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     Gravedad = 0.5
     EnElSuelo = True
     
+    # Rangos de enemigos
+    #Homero
     Velocidad_Enemigo_H = -3
     liminete_iz_H = 7200
     liminete_der_H = 7800
+
+    #Cj 
+    Velocidad_Enemigo_CJ = -3
+    liminete_iz_CJ = 3000
+    liminete_der_CJ = 4000
+
+    #Tralalero
+    Velocidad_Enemigo_TRL = -3
+    liminete_iz_TRL = 4000
+    liminete_der_TRL = 5000
+
+    #DOOM
+    Velocidad_Enemigo_D = -3
+    liminete_iz_D = 2500
+    liminete_der_D = 3000
 
     Contador = 0
     PosicionXCamara = 0
@@ -239,16 +271,20 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         pantalla.blit(fondo, (-PosicionXCamara + 6000, 0))
         pantalla.blit(fondo, (-PosicionXCamara + 8000, 0))
 
-        pantalla.blit(JugadorEstado, (Jugador.x - PosicionXCamara -23, Jugador.y))
-        pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - PosicionXCamara, Posicionxy_Hitbox_H.y))
-
+        pantalla.blit(JugadorEstado, (Jugador.x - PosicionXCamara-23, Jugador.y))
+        pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - PosicionXCamara -30, Posicionxy_Hitbox_H.y -15))
+        pantalla.blit(Escala_de_CJ,(Posicionxy_Hitbox_CJ.x - PosicionXCamara -30, Posicionxy_Hitbox_CJ.y -15))
+        pantalla.blit(Escala_de_TRL,(Posicionxy_Hitbox_TRL.x  - PosicionXCamara -30, Posicionxy_Hitbox_TRL.y -15))
+        pantalla.blit(Escala_de_D,(Posicionxy_Hitbox_D.x - PosicionXCamara -30, Posicionxy_Hitbox_D.y -15))
         # ==================================
         #   MOSTRAR HITBOX (NUEVO)
         # ==================================
         if mostrar_hitbox:
             dibujar_hitbox(pantalla, Jugador, PosicionXCamara, (0,255,0))
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_H, PosicionXCamara, (255,0,0))
-
+            dibujar_hitbox(pantalla, Posicionxy_Hitbox_CJ, PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Posicionxy_Hitbox_TRL, PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Posicionxy_Hitbox_D, PosicionXCamara, (255,0,0))
         
         if Vida == 1:
            pantalla.blit(ImgCorazon, (-65,-10))
@@ -261,8 +297,18 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
 
         pantalla.blit(txt_tiempo, (800,0))
         pantalla.blit(txt_puntos, (800,50))
-
+        
+        #Coliciones con enemigos
         if Jugador.colliderect(Posicionxy_Hitbox_H):
+            Vida -= 1
+        
+        if Jugador.colliderect(Posicionxy_Hitbox_TRL):
+            Vida -= 1
+        
+        if Jugador.colliderect(Posicionxy_Hitbox_D):
+            Vida -= 1
+        
+        if Jugador.colliderect(Posicionxy_Hitbox_CJ):
             Vida -= 1
 
         if Vida <= 0:
@@ -273,12 +319,36 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
                 print("== Venta agregada con éxito ==")
             
             Jugando = False
-
+        
+        #Rango de movimiento de Enemigos
+        #Homero
         Posicionxy_Hitbox_H.x += Velocidad_Enemigo_H
         if Posicionxy_Hitbox_H.x <= liminete_iz_H:
             Velocidad_Enemigo_H = abs(Velocidad_Enemigo_H)
         elif Posicionxy_Hitbox_H.right >= liminete_der_H:
             Velocidad_Enemigo_H = -abs(Velocidad_Enemigo_H)
+        
+        #Cj
+        Posicionxy_Hitbox_CJ.x += Velocidad_Enemigo_CJ
+        if Posicionxy_Hitbox_CJ.x <= liminete_iz_CJ:
+            Velocidad_Enemigo_CJ = abs(Velocidad_Enemigo_CJ)
+        elif Posicionxy_Hitbox_CJ.right >= liminete_der_CJ:
+            Velocidad_Enemigo_CJ = -abs(Velocidad_Enemigo_CJ)
+
+        #Tralalero
+        Posicionxy_Hitbox_TRL.x += Velocidad_Enemigo_TRL
+        if Posicionxy_Hitbox_TRL.x <= liminete_iz_TRL:
+            Velocidad_Enemigo_TRL = abs(Velocidad_Enemigo_TRL)
+        elif Posicionxy_Hitbox_TRL.right >= liminete_der_TRL:
+            Velocidad_Enemigo_TRL = -abs(Velocidad_Enemigo_TRL)
+        
+        #Doom
+        Posicionxy_Hitbox_D.x += Velocidad_Enemigo_D
+        if Posicionxy_Hitbox_D.x <= liminete_iz_D:
+            Velocidad_Enemigo_D = abs(Velocidad_Enemigo_D)
+        elif Posicionxy_Hitbox_D.right >= liminete_der_D:
+            Velocidad_Enemigo_D = -abs(Velocidad_Enemigo_D)
+       
 
         pygame.display.update()
         reloj.tick(60)

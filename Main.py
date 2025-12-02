@@ -26,6 +26,8 @@ while MenuPrincipal:
                     Nombre, puntos_actual, Fecha = linea.strip().split(";")
                     print(f"{Nombre}: {puntos_actual}: {Fecha}")
             print("Aqui van las estadisticas")
+            
+            
 
         elif opcion == 3:
             break
