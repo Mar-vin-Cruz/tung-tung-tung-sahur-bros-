@@ -81,11 +81,18 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     musica()
     
     Plataforma = "Objetos/PlataformaUa.png"
-    Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (96, 20))
+    Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (96,96))
  
     #Posicion plataformas
     Plataformas = [pygame.Rect(0,595,10000,20),#Piso,
-                   pygame.Rect(250,500,96,20)#Plataforma ejemplo,
+                   pygame.Rect(250,520,96,20),#Plataforma ejemplo,
+                   pygame.Rect(5300,515,96,20),
+                   pygame.Rect(800,535,96,20),#M
+                   pygame.Rect(600,435,96,20),#M
+                   pygame.Rect(800,335,96,20),#M
+                   pygame.Rect(600,235,96,20),#M
+                   pygame.Rect(800,135,96,20),#M
+
 
     ]
     # -------------------------
@@ -97,30 +104,47 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     Perdida_por_s = 10
     
     #Enemigos
-    Homero = "Enemigos/Omero chino.gif"
+    Homero = "EnemigosIMG/Omero chino.gif"
     Posicionxy_Hitbox_H = pygame.Rect(4500,520,48,80)
     Escala_de_H = pygame.transform.scale(pygame.image.load(Homero), (96,96))
 
-    Cj = "ImagenesAmongas/CJ.png"
+    Cj = "EnemigosIMG/CJ.png"
     Posicionxy_Hitbox_CJ = pygame.Rect(4000,520,48,80)
     Escala_de_CJ = pygame.transform.scale(pygame.image.load(Cj), (96,96))
 
-    Tralalero = "ImagenesAmongas/tralalero tralala.png"
+    Tralalero = "EnemigosIMG/tralalero tralala.png"
     Posicionxy_Hitbox_TRL = pygame.Rect(3500,520,80,80)
     Escala_de_TRL = pygame.transform.scale(pygame.image.load(Tralalero), (128,96))
 
     
-    Doom = "ImagenesAmongas/doom derecha .png"
+    Doom = "EnemigosIMG/doom derecha .png"
     Posicionxy_Hitbox_D = pygame.Rect(3000,520,48,80)
     Escala_de_D = pygame.transform.scale(pygame.image.load(Doom), (96,128))
     
-    Boo = "ImagenesAmongas/enemigo volador .png"
+    Boo = "EnemigosIMG/enemigo volador .png"
     Posicionxy_Hitbox_N = pygame.Rect(2500,520,100,100)
     Escala_de_N = pygame.transform.scale(pygame.image.load(Boo), (128,128))
+
+    DragonCaneloni = "EnemigosIMG/dragomcaneloni.png"
+    Posicionxy_Hitbox_DC = pygame.Rect(6000,520,130,100)
+    Escala_de_DC = pygame.transform.scale(pygame.image.load(DragonCaneloni), (200,200))
     
-    Cr7 = "ImagenesAmongas/Chilena de cr7.png"
+    Cr7 = "EnemigosIMG/Chilena de cr7.png"
     Posicionxy_Hitbox_7 = pygame.Rect(5500,450,32,128)
     Escala_de_7 = pygame.transform.scale(pygame.image.load(Cr7), (200,200))
+
+    Messi = "EnemigosIMG/messi.png"
+    Posicionxy_Hitbox_10 = pygame.Rect(350,450,96,128)
+    Escala_de_10 = pygame.transform.scale(pygame.image.load(Messi), (200,200))
+
+    LaGrandreCombinacion = "EnemigosIMG/LagrandeCombinacion.png"
+    Posicionxy_Hitbox_LGC = pygame.Rect(6000,500,96,96)
+    Escala_de_LGC = pygame.transform.scale(pygame.image.load(LaGrandreCombinacion), (128,128))
+
+    Marvin = "EnemigosIMG/Marvin.png"
+    Posicionxy_Hitbox_M = pygame.Rect(1000,100,96,600)
+    Escala_de_M = pygame.transform.scale(pygame.image.load(Marvin), (200,1000))
+
    
     pantalla = pygame.display.set_mode((1000,800))
     Jugador = pygame.Rect(200,515,48,80)
@@ -174,6 +198,17 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     Velocidad_Enemigo_N = -3
     liminete_Sube_N = 300  
     liminete_Baja_N = 515
+    
+    #Dragon Caneloni 
+    Velocidad_Enemigo_DC = -3
+    liminete_Sube_DC = 300  
+    liminete_Baja_DC = 515
+
+    #La grande Combu
+    Velocidad_Enemigo_LGC = -3
+    liminete_iz_LGC = 5700
+    liminete_der_LGC = 6300
+    
 
     Contador = 0
     PosicionXCamara = 0
@@ -218,11 +253,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             direccion = "izquierda"
 
         if Movimiento[pygame.K_SPACE] and EnElSuelo:
-<<<<<<< HEAD
-            VelEny = -15
-=======
-            VelEny = -12
->>>>>>> 82ff08c25b9ffbf20fc3f862f357a293107bf989
+            VelEny = -11
             EnElSuelo = False
 
         VelEny += Gravedad
@@ -306,17 +337,21 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         pantalla.blit(Escala_de_CJ,(Posicionxy_Hitbox_CJ.x - PosicionXCamara -30, Posicionxy_Hitbox_CJ.y -15))
         pantalla.blit(Escala_de_TRL,(Posicionxy_Hitbox_TRL.x  - PosicionXCamara -30, Posicionxy_Hitbox_TRL.y -15))
         pantalla.blit(Escala_de_D,(Posicionxy_Hitbox_D.x - PosicionXCamara -30, Posicionxy_Hitbox_D.y -15))
-<<<<<<< HEAD
         pantalla.blit(Escala_de_N,(Posicionxy_Hitbox_N.x - PosicionXCamara -10, Posicionxy_Hitbox_N.y -15))
+        pantalla.blit(Escala_de_DC,(Posicionxy_Hitbox_DC.x - PosicionXCamara -25, Posicionxy_Hitbox_DC.y -30))
         pantalla.blit(Escala_de_7,(Posicionxy_Hitbox_7.x - PosicionXCamara-100 , Posicionxy_Hitbox_7.y ))
-
-=======
-
-        #Ponerle la imagen a la plataforma y la hitbox
-        pantalla.blit(Escala_de_P, (Plataformas[1].x - PosicionXCamara, Plataformas[1].y))
-        pygame.draw.rect(pantalla, (0,255,0), (Plataformas[1].x - PosicionXCamara, Plataformas[1].y, Plataformas[1].width, Plataformas[1].height), 2)
+        pantalla.blit(Escala_de_LGC,(Posicionxy_Hitbox_LGC.x - PosicionXCamara-15 , Posicionxy_Hitbox_LGC.y -10))
+        pantalla.blit(Escala_de_P,(Plataformas[1].x - PosicionXCamara , Plataformas[1].y -15 ))
+        pantalla.blit(Escala_de_P,(Plataformas[2].x - PosicionXCamara , Plataformas[2].y -10 ))
+        pantalla.blit(Escala_de_P,(Plataformas[3].x - PosicionXCamara , Plataformas[3].y -10 ))
+        pantalla.blit(Escala_de_P,(Plataformas[4].x - PosicionXCamara , Plataformas[4].y -10))
+        pantalla.blit(Escala_de_P,(Plataformas[5].x - PosicionXCamara , Plataformas[5].y -10 ))
+        pantalla.blit(Escala_de_P,(Plataformas[6].x - PosicionXCamara , Plataformas[6].y -10 ))
+        pantalla.blit(Escala_de_P,(Plataformas[7].x - PosicionXCamara , Plataformas[7].y  -10))
+        pantalla.blit(Escala_de_10,(Posicionxy_Hitbox_10.x - PosicionXCamara-30 , Posicionxy_Hitbox_10.y -50))
+        pantalla.blit(Escala_de_M,(Posicionxy_Hitbox_M.x - PosicionXCamara-30 , Posicionxy_Hitbox_M.y ))
         
->>>>>>> 82ff08c25b9ffbf20fc3f862f357a293107bf989
+
         # ==================================
         #   MOSTRAR HITBOX (NUEVO)
         # ==================================
@@ -326,12 +361,19 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_CJ, PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_TRL, PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_D, PosicionXCamara, (255,0,0))
-<<<<<<< HEAD
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_N, PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Posicionxy_Hitbox_DC, PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_7, PosicionXCamara, (255,0,0))
-=======
-           
->>>>>>> 82ff08c25b9ffbf20fc3f862f357a293107bf989
+            dibujar_hitbox(pantalla, Posicionxy_Hitbox_10, PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Posicionxy_Hitbox_M, PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Posicionxy_Hitbox_LGC, PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Plataformas[1], PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Plataformas[2], PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Plataformas[3], PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Plataformas[4], PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Plataformas[5], PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Plataformas[6], PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Plataformas[7], PosicionXCamara, (255,0,0))
         
         if Vida == 1:
            pantalla.blit(ImgCorazon, (-65,-10))
@@ -360,6 +402,14 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         if Jugador.colliderect(Posicionxy_Hitbox_N):
             Vida -= 1
         if Jugador.colliderect(Posicionxy_Hitbox_7):
+            Vida -= 1
+        if Jugador.colliderect(Posicionxy_Hitbox_10):
+            Vida -= 1
+        if Jugador.colliderect(Posicionxy_Hitbox_LGC):
+            Vida -= 1
+        if Jugador.colliderect(Posicionxy_Hitbox_DC):
+            Vida -= 1
+        if Jugador.colliderect(Posicionxy_Hitbox_M):
             Vida -= 1
 
         if Vida <= 0:
@@ -399,12 +449,26 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             Velocidad_Enemigo_D = abs(Velocidad_Enemigo_D)
         elif Posicionxy_Hitbox_D.right >= liminete_der_D:
             Velocidad_Enemigo_D = -abs(Velocidad_Enemigo_D)
-        
+        #Boo
         Posicionxy_Hitbox_N.y += Velocidad_Enemigo_N
         if Posicionxy_Hitbox_N.y <= liminete_Sube_N:
             Velocidad_Enemigo_N = abs(Velocidad_Enemigo_N)
         elif Posicionxy_Hitbox_N.y >= liminete_Baja_N:
             Velocidad_Enemigo_N = -abs(Velocidad_Enemigo_N)
+        
+        #Dracon caneloni
+        Posicionxy_Hitbox_DC.y += Velocidad_Enemigo_DC
+        if Posicionxy_Hitbox_DC.y <= liminete_Sube_DC:
+            Velocidad_Enemigo_DC = abs(Velocidad_Enemigo_DC)
+        elif Posicionxy_Hitbox_DC.y >= liminete_Baja_DC:
+            Velocidad_Enemigo_DC = -abs(Velocidad_Enemigo_DC)
+
+        #La grande 
+        Posicionxy_Hitbox_LGC.x += Velocidad_Enemigo_LGC
+        if Posicionxy_Hitbox_LGC.x <= liminete_iz_LGC:
+            Velocidad_Enemigo_LGC = abs(Velocidad_Enemigo_LGC)
+        elif Posicionxy_Hitbox_LGC.right >= liminete_der_LGC:
+            Velocidad_Enemigo_LGC = -abs(Velocidad_Enemigo_LGC)
         
        
 
