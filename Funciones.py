@@ -9,9 +9,7 @@ fig = Figlet(font="ANSI_Shadow")
 Titulo = fig.renderText("Universe Bros")
 Jugando = False
 
-# ==================================
-#   FUNCIÓN NUEVA PARA HITBOX
-# ==================================
+# dibujar hitbox 
 def dibujar_hitbox(pantalla, rect, camara_x, color=(0,255,0)):
     pygame.draw.rect(
         pantalla,
@@ -73,6 +71,12 @@ def seleccion_pj():
         
     return ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI, Nombre        
 
+def Despedida():
+    figDespedida = Figlet(font="ANSI_Shadow")
+    ADIOS = fig.renderText("ADIOS...")
+    print(Fore.RED + ADIOS)
+    print(Style.RESET_ALL)
+     
 
 def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI, Nombre):
     Jugando = True
@@ -84,23 +88,25 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     Escala_de_P = pygame.transform.scale(pygame.image.load(Plataforma), (96,96))
  
     #Posicion plataformas
-    Plataformas = [pygame.Rect(0,595,10000,20),#Piso,
+    Plataformas = [pygame.Rect(-1000,595,11000,20),#Piso,
                    pygame.Rect(250,520,85,20),#Plataforma ejemplo,
-                   pygame.Rect(5300,515,85,20),
+                   pygame.Rect(5300,515,85,20),#cr7
                    pygame.Rect(800,535,85,20),#M
                    pygame.Rect(600,435,85,20),#M
                    pygame.Rect(800,335,85,20),#M
                    pygame.Rect(600,235,85,20),#M
                    pygame.Rect(800,135,85,20),#M
-
-
+                   pygame.Rect(6800,520,85,20),#T
+                   pygame.Rect(6600,420,85,20),#T
+                   pygame.Rect(6800,320,85,20),#T
+                   pygame.Rect(6600,220,85,20),#T
+                   pygame.Rect(6800,110,85,20),#T
     ]
     # -------------------------
     # VARIABLES DEL TIEMPO Y PUNTOS
     # -------------------------
     tiempo_inicial = pygame.time.get_ticks()
     Limite_tiempo = 100
-    Puntos_iniciales = 1000
     Perdida_por_s = 10
     
     #Enemigos
@@ -138,12 +144,17 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     Escala_de_10 = pygame.transform.scale(pygame.image.load(Messi), (200,200))
 
     LaGrandreCombinacion = "EnemigosIMG/LagrandeCombinacion.png"
-    Posicionxy_Hitbox_LGC = pygame.Rect(6000,500,96,96)
-    Escala_de_LGC = pygame.transform.scale(pygame.image.load(LaGrandreCombinacion), (128,128))
+    Posicionxy_Hitbox_LGC = pygame.Rect(6000,500,90,90)
+    Escala_de_LGC = pygame.transform.scale(pygame.image.load(LaGrandreCombinacion), (90,90))
 
     Marvin = "EnemigosIMG/Marvin.png"
     Posicionxy_Hitbox_M = pygame.Rect(1000,100,96,600)
     Escala_de_M = pygame.transform.scale(pygame.image.load(Marvin), (200,1000))
+
+    Tung = "EnemigosIMG/Rung.exe.png"
+    Posicionxy_Hitbox_T = pygame.Rect(6900,75,96,600)
+    Escala_de_T = pygame.transform.scale(pygame.image.load(Tung), (128,600))
+
 
    
     pantalla = pygame.display.set_mode((1000,800))
@@ -168,7 +179,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     SaltoI = pygame.transform.scale(pygame.image.load(ImgSaltoI), (96,96))
 
     Quieto = pygame.transform.scale(pygame.image.load(ImgQuietoF), (96,96))
-
+    #Fisca
     VelEny = 0
     Gravedad = 0.5
     EnElSuelo = True
@@ -214,8 +225,8 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     PosicionXCamara = 0
     direccion = "derecha"
 
-    Mapa_Inicio = 0
-    Mapa_Fin = 9450
+    Mapa_Inicio = -1000
+    Mapa_Fin = 9000
 
     Vida = 1
     ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (200,96))
@@ -231,9 +242,8 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             if i.type == pygame.QUIT:
                 Jugando = False
 
-            # ==================================
-            #   TOGGLE HITBOX (NUEVO)
-            # ==================================
+            
+            #   TOGGLE HITBOX 
             if i.type == pygame.KEYDOWN:
                 if i.key == pygame.K_h:
                     mostrar_hitbox = not mostrar_hitbox
@@ -245,12 +255,12 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         if Movimiento[pygame.K_RIGHT]:
             Jugador.x += 11
             Derecha = True
-            direccion = "derecha"
+        
 
         elif Movimiento[pygame.K_LEFT]:
             Jugador.x -= 11
             Izquierda = True
-            direccion = "izquierda"
+            
 
         if Movimiento[pygame.K_SPACE] and EnElSuelo:
             VelEny = -11
@@ -269,7 +279,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
            with open("Estadisticas.txt", "a") as f:
                 Fecha = (datetime.now().strftime("%d-%m-%Y"))
                 f.write(f"{Nombre};{puntos_actual};{Fecha}\n")
-                print(Fore.Red + "== Estadisticas agregada con éxito ==")
+                print("== Estadisticas agregada con éxito ==")
            Jugando = False
 
         PosicionXCamara = Jugador.x - 400
@@ -300,7 +310,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
 
         #Colision con piso y plataformas
         for P in Plataformas:
-            if Jugador.colliderect(P):   # <-- Usa el BOTTOM del jugador
+            if Jugador.colliderect(P):   
                 if VelEny > 0:
                     Jugador.bottom = P.top
                     VelEny = 0
@@ -309,19 +319,18 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
                     Jugador.top = P.bottom
                     VelEny = 0
                 
-        # --------------------------
+       
         # TIEMPO Y PUNTOS
-        # --------------------------
         tiempo_ms = pygame.time.get_ticks() - tiempo_inicial
         tiempo_seg = tiempo_ms // 1000
         tiempo_restante = Limite_tiempo - tiempo_seg
-        puntos_actual = max(0, Puntos_iniciales - tiempo_seg * Perdida_por_s)
+        puntos_actual = max(0, int((Jugador.x/10) - tiempo_seg))
 
         if tiempo_seg >= Limite_tiempo:
             with open("Estadisticas.txt", "a") as f:
                 Fecha = (datetime.now().strftime("%d-%m-%Y"))
                 f.write(f"{Nombre};{puntos_actual};{Fecha}\n")
-                print(Fore.RED + "== Estadisticas agregada con éxito ==")
+                print("== Estadisticas agregada con éxito ==")
             Jugando = False
 
         pantalla.fill((0,0,0))
@@ -338,23 +347,28 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         pantalla.blit(Escala_de_TRL,(Posicionxy_Hitbox_TRL.x  - PosicionXCamara -30, Posicionxy_Hitbox_TRL.y -15))
         pantalla.blit(Escala_de_D,(Posicionxy_Hitbox_D.x - PosicionXCamara -30, Posicionxy_Hitbox_D.y -15))
         pantalla.blit(Escala_de_N,(Posicionxy_Hitbox_N.x - PosicionXCamara -10, Posicionxy_Hitbox_N.y -15))
-        pantalla.blit(Escala_de_DC,(Posicionxy_Hitbox_DC.x - PosicionXCamara -25, Posicionxy_Hitbox_DC.y -30))
+        pantalla.blit(Escala_de_DC,(Posicionxy_Hitbox_DC.x - PosicionXCamara -40, Posicionxy_Hitbox_DC.y -30))
         pantalla.blit(Escala_de_7,(Posicionxy_Hitbox_7.x - PosicionXCamara-100 , Posicionxy_Hitbox_7.y ))
-        pantalla.blit(Escala_de_LGC,(Posicionxy_Hitbox_LGC.x - PosicionXCamara-15 , Posicionxy_Hitbox_LGC.y -10))
+        pantalla.blit(Escala_de_LGC,(Posicionxy_Hitbox_LGC.x - PosicionXCamara-10 , Posicionxy_Hitbox_LGC.y -10))
         pantalla.blit(Escala_de_P,(Plataformas[1].x - PosicionXCamara , Plataformas[1].y -15 ))
         pantalla.blit(Escala_de_P,(Plataformas[2].x - PosicionXCamara , Plataformas[2].y -10 ))
         pantalla.blit(Escala_de_P,(Plataformas[3].x - PosicionXCamara , Plataformas[3].y -10 ))
         pantalla.blit(Escala_de_P,(Plataformas[4].x - PosicionXCamara , Plataformas[4].y -10))
         pantalla.blit(Escala_de_P,(Plataformas[5].x - PosicionXCamara , Plataformas[5].y -10 ))
         pantalla.blit(Escala_de_P,(Plataformas[6].x - PosicionXCamara , Plataformas[6].y -10 ))
-        pantalla.blit(Escala_de_P,(Plataformas[7].x - PosicionXCamara , Plataformas[7].y  -10))
+        pantalla.blit(Escala_de_P,(Plataformas[7].x - PosicionXCamara , Plataformas[7].y -10))
+        pantalla.blit(Escala_de_P,(Plataformas[8].x - PosicionXCamara , Plataformas[8].y  -10))
+        pantalla.blit(Escala_de_P,(Plataformas[9].x - PosicionXCamara , Plataformas[9].y -10))
+        pantalla.blit(Escala_de_P,(Plataformas[10].x - PosicionXCamara , Plataformas[10].y -10 ))
+        pantalla.blit(Escala_de_P,(Plataformas[11].x - PosicionXCamara , Plataformas[11].y -10 ))
+        pantalla.blit(Escala_de_P,(Plataformas[12].x - PosicionXCamara , Plataformas[12].y -10))
         pantalla.blit(Escala_de_10,(Posicionxy_Hitbox_10.x - PosicionXCamara-30 , Posicionxy_Hitbox_10.y -50))
         pantalla.blit(Escala_de_M,(Posicionxy_Hitbox_M.x - PosicionXCamara-30 , Posicionxy_Hitbox_M.y ))
+        pantalla.blit(Escala_de_T,(Posicionxy_Hitbox_T.x - PosicionXCamara-30 , Posicionxy_Hitbox_T.y -20 ))
         
 
-        # ==================================
+    
         #   MOSTRAR HITBOX (NUEVO)
-        # ==================================
         if mostrar_hitbox:
             dibujar_hitbox(pantalla, Jugador, PosicionXCamara, (0,255,0))
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_H, PosicionXCamara, (255,0,0))
@@ -366,6 +380,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_7, PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_10, PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_M, PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Posicionxy_Hitbox_T, PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Posicionxy_Hitbox_LGC, PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Plataformas[1], PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Plataformas[2], PosicionXCamara, (255,0,0))
@@ -374,6 +389,12 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             dibujar_hitbox(pantalla, Plataformas[5], PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Plataformas[6], PosicionXCamara, (255,0,0))
             dibujar_hitbox(pantalla, Plataformas[7], PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Plataformas[8], PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Plataformas[9], PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Plataformas[10], PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Plataformas[11], PosicionXCamara, (255,0,0))
+            dibujar_hitbox(pantalla, Plataformas[12], PosicionXCamara, (255,0,0))
+     
         
         if Vida == 1:
            pantalla.blit(ImgCorazon, (-65,-10))
@@ -411,13 +432,15 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             Vida -= 1
         if Jugador.colliderect(Posicionxy_Hitbox_M):
             Vida -= 1
+        if Jugador.colliderect(Posicionxy_Hitbox_T):
+            Vida -= 1
 
         if Vida <= 0:
 
             with open("Estadisticas.txt", "a") as f:
                 Fecha = (datetime.now().strftime("%d-%m-%Y"))
                 f.write(f"{Nombre};{puntos_actual};{Fecha}\n")
-                print(Fore.RED + "== Estadisticas agregada con éxito ==")
+                print("== Estadisticas agregada con éxito ==")
             
             Jugando = False
         
@@ -480,8 +503,3 @@ def musica():
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(100)
 
-def Despedida():
-    figDespedida = Figlet(font="ANSI_Shadow")
-    ADIOS = fig.renderText("ADIOS...")
-    print(Fore.RED + ADIOS)
-    print(Style.RESET_ALL)
