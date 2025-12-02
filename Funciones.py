@@ -9,6 +9,17 @@ fig = Figlet(font="ANSI_Shadow")
 Titulo = fig.renderText("Tung Tung Bros")
 Jugando = False
 
+# ==================================
+#   FUNCIÓN NUEVA PARA HITBOX
+# ==================================
+def dibujar_hitbox(pantalla, rect, camara_x, color=(0,255,0)):
+    pygame.draw.rect(
+        pantalla,
+        color,
+        (rect.x - camara_x, rect.y, rect.width, rect.height),
+        2
+    )
+
 def mostrar_menu():
     print(Fore.GREEN + Titulo)
     print(Fore.LIGHTYELLOW_EX + "\n=======MENU=======")
@@ -18,8 +29,6 @@ def mostrar_menu():
     print(Style.RESET_ALL)
     print("------------------")
 
-def ingreso_name():
-    Nombre = str(input("Ingrese su nombre: "))
 
 def seleccion_pj():
     PersonajeExistente = False
@@ -35,7 +44,8 @@ def seleccion_pj():
             ImgSaltoD = "ImagenesPato/Pato Salto Derecha.png"
             ImgSaltoI = "ImagenesPato/Pato Salto Izquierda.png"
             PersonajeExistente = True
-        
+            Nombre = str(input("Ingrese su nombre: "))
+            
         elif Personajes == '2':
             ImgQuietoD = "ImagenesTung/Tung Quieto Derecha.png"
             ImgQuietoI = "ImagenesTung/Tung Quieto Izquierda.png"
@@ -45,6 +55,7 @@ def seleccion_pj():
             ImgSaltoD = "ImagenesTung/Tung Salto Derecha.png"
             ImgSaltoI = "ImagenesTung/Tung Salto Izquierda.png"
             PersonajeExistente = True
+            Nombre = str(input("Ingrese su nombre: "))
 
         elif Personajes == '3':
             ImgQuietoD = "ImagenesMago/Mago Quieto Derecha.png"
@@ -55,12 +66,15 @@ def seleccion_pj():
             ImgSaltoD = "ImagenesMago/Mago Salto Derecha.png"
             ImgSaltoI = "ImagenesMago/Mago Salto Izquierda.png"
             PersonajeExistente = True
+            Nombre = str(input("Ingrese su nombre: "))
+         
         else: 
             print("Solo del 1 al 3")
-    
-    return ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI        
+        
+    return ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI, Nombre        
 
-def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI):
+
+def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI, Nombre):
     Jugando = True
     pygame.init()
     pygame.mixer.init()
@@ -119,12 +133,23 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     Vida = 1
     ImgCorazon = pygame.transform.scale(pygame.image.load("Corazon lleno.png"), (200,96))
     ImgCorazonVacio = pygame.transform.scale(pygame.image.load("Corazon Vasio.png"), (200,96))
+
+    # ==================================
+    #   VARIABLE NUEVA PARA HITBOX
+    # ==================================
+    mostrar_hitbox = False
     
     while Jugando:
         for i in pygame.event.get():
             if i.type == pygame.QUIT:
-                
                 Jugando = False
+
+            # ==================================
+            #   TOGGLE HITBOX (NUEVO)
+            # ==================================
+            if i.type == pygame.KEYDOWN:
+                if i.key == pygame.K_h:
+                    mostrar_hitbox = not mostrar_hitbox
 
         Movimiento = pygame.key.get_pressed()
         Derecha = False
@@ -154,8 +179,10 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
            Jugador.right = Mapa_Fin
 
         if Jugador.right >= Mapa_Fin:
-           
-           
+           with open("Estadisticas.txt", "a") as f:
+                Fecha = (datetime.now().strftime("%d-%m-%Y"))
+                f.write(f"{Nombre};{puntos_actual};{Fecha}\n")
+                print("== Venta agregada con éxito ==")
            Jugando = False
 
         if Jugador.y >= 515:
@@ -189,15 +216,19 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
                 JugadorEstado = Quieto
                 Contador = 0
 
-        # ----------------------------------
-        # ACTUALIZAR TIEMPO Y PUNTOS
-        # ----------------------------------
+        # --------------------------
+        # TIEMPO Y PUNTOS
+        # --------------------------
         tiempo_ms = pygame.time.get_ticks() - tiempo_inicial
         tiempo_seg = tiempo_ms // 1000
         tiempo_restante = Limite_tiempo - tiempo_seg
         puntos_actual = max(0, Puntos_iniciales - tiempo_seg * Perdida_por_s)
 
         if tiempo_seg >= Limite_tiempo:
+            with open("Estadisticas.txt", "a") as f:
+                Fecha = (datetime.now().strftime("%d-%m-%Y"))
+                f.write(f"{Nombre};{puntos_actual};{Fecha}\n")
+                print("== Venta agregada con éxito ==")
             Jugando = False
 
         pantalla.fill((0,0,0))
@@ -208,17 +239,22 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         pantalla.blit(fondo, (-PosicionXCamara + 6000, 0))
         pantalla.blit(fondo, (-PosicionXCamara + 8000, 0))
 
-        pantalla.blit(JugadorEstado, (Jugador.x - PosicionXCamara, Jugador.y))
+        pantalla.blit(JugadorEstado, (Jugador.x - PosicionXCamara -23, Jugador.y))
         pantalla.blit(Escala_de_H,(Posicionxy_Hitbox_H.x - PosicionXCamara, Posicionxy_Hitbox_H.y))
+
+        # ==================================
+        #   MOSTRAR HITBOX (NUEVO)
+        # ==================================
+        if mostrar_hitbox:
+            dibujar_hitbox(pantalla, Jugador, PosicionXCamara, (0,255,0))
+            dibujar_hitbox(pantalla, Posicionxy_Hitbox_H, PosicionXCamara, (255,0,0))
+
         
         if Vida == 1:
            pantalla.blit(ImgCorazon, (-65,-10))
         else:
            pantalla.blit(ImgCorazonVacio, (-65,-10))
 
-        # --------------------------
-        # DIBUJAR TIEMPO Y PUNTOS
-        # --------------------------
         font = pygame.font.SysFont(None, 50)
         txt_tiempo = font.render(f"Tiempo: {tiempo_restante}", True, (255,255,255))
         txt_puntos = font.render(f"Puntos: {puntos_actual}", True, (255,255,255))
@@ -232,9 +268,8 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         if Vida <= 0:
 
             with open("Estadisticas.txt", "a") as f:
-                puntosG = (puntos_actual),
                 Fecha = (datetime.now().strftime("%d-%m-%Y"))
-                f.write(f"{Nombre},{puntosG},{Fecha}\n")
+                f.write(f"{Nombre};{puntos_actual};{Fecha}\n")
                 print("== Venta agregada con éxito ==")
             
             Jugando = False
