@@ -49,7 +49,7 @@ while MenuPrincipal:
                     df = df.sort_values(by="Puntos", ascending=False)
                     print(df)
                     
-            except KeyError:
+            except FileNotFoundError:
                  print("No hay partidas Jugadas")
 
         elif opcion == '3':

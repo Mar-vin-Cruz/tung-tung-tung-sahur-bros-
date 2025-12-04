@@ -72,7 +72,6 @@ def seleccion_pj():
     return ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgSaltoD, ImgSaltoI, Nombre        
 
 def Despedida():
-    figDespedida = Figlet(font="ANSI_Shadow")
     ADIOS = fig.renderText("ADIOS...")
     print(Fore.RED + ADIOS)
     print(Style.RESET_ALL)
@@ -107,7 +106,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
     # -------------------------
     tiempo_inicial = pygame.time.get_ticks()
     Limite_tiempo = 100
-    Perdida_por_s = 10
+    
     
     #Enemigos
     Homero = "EnemigosIMG/Omero chino.gif"
@@ -223,7 +222,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
 
     Contador = 0
     PosicionXCamara = 0
-    direccion = "derecha"
+    
 
     Mapa_Inicio = -1000
     Mapa_Fin = 9000
@@ -263,7 +262,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             
 
         if Movimiento[pygame.K_SPACE] and EnElSuelo:
-            VelEny = -11
+            VelEny = -15
             EnElSuelo = False
 
         VelEny += Gravedad
