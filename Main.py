@@ -1,4 +1,3 @@
-import pygame
 import pandas as pd
 from colorama import Fore
 import matplotlib.pyplot as plt
@@ -49,7 +48,7 @@ while MenuPrincipal:
                     df = df.sort_values(by="Puntos", ascending=False)
                     print(df)
                     
-            except FileNotFoundError:
+            except KeyError:
                  print("No hay partidas Jugadas")
 
         elif opcion == '3':

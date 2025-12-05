@@ -262,7 +262,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
             
 
         if Movimiento[pygame.K_SPACE] and EnElSuelo:
-            VelEny = -15
+            VelEny = -11
             EnElSuelo = False
 
         VelEny += Gravedad
@@ -498,7 +498,7 @@ def Juego(ImgQuietoD, ImgQuietoI, ImgCaminandoD, ImgCaminandoI, ImgQuietoF, ImgS
         reloj.tick(60)
 
 def musica():
-    pygame.mixer.music.load("musica/FUERZA-REGIDA-TU-SANCHO-_VIDEO-OFICIAL_.wav")
+    pygame.mixer.music.load("Musica/91476_Glorious_morning.wav")
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(100)
 
